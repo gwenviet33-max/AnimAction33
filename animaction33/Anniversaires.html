@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Anniversaires — AnimAction33</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Bebas+Neue&family=Bungee&family=Bungee+Shade&family=Rubik+Mono+One&family=Caveat+Brush&family=Caveat&family=Permanent+Marker&family=Shadows+Into+Light&family=Kalam&family=Patrick+Hand&family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=DM+Sans:wght@400;500;700&family=Manrope:wght@400;500;700&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script>
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "preset": "Original",
+    "blue": "#1C5FD8",
+    "red": "#E8252C",
+    "yellow": "#FFC91F",
+    "ink": "#0F1B3D",
+    "paper": "#FFFDF6",
+    "cream": "#FFF5D6",
+    "fontDisplay": "Archivo Black",
+    "fontBody": "Figtree",
+    "fontHand": "Caveat Brush",
+    "bodySize": 16,
+    "radiusSm": 14,
+    "radius": 20,
+    "radiusLg": 28,
+    "border": 3,
+    "shadowSm": 4,
+    "shadow": 6,
+    "shadowLg": 10,
+    "shadowXl": 14
+  }/*EDITMODE-END*/;
+</script>
+<style>
+/* Prestation-specific */
+.p-hero {
+  background: var(--yellow);
+  border-bottom: 4px solid var(--ink);
+  padding: 60px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+.p-hero-grid {
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center;
+}
+@media (max-width: 900px) { .p-hero-grid { grid-template-columns: 1fr; } }
+.p-hero h1 {
+  font-size: clamp(52px, 7vw, 88px);
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin: 18px 0 22px;
+}
+.p-hero-sub { font-size: 18px; max-width: 560px; }
+.p-hero .big-emoji {
+  font-size: 280px;
+  text-align: center;
+  filter: drop-shadow(10px 10px 0 rgba(15,27,61,.15));
+  animation: float-y 4s ease-in-out infinite;
+  position: relative;
+  line-height: 1;
+}
+.p-hero .big-emoji .sticker {
+  position: absolute; top: 0; right: 10%;
+  font-size: 36px;
+  transform: rotate(-10deg);
+}
+
+.breadcrumb {
+  background: var(--cream);
+  border-bottom: 2px solid var(--ink-50);
+  padding: 14px 0;
+  font-size: 13px; color: var(--ink-70);
+  font-weight: 600;
+}
+.breadcrumb a:hover { color: var(--red); }
+.breadcrumb .sep { margin: 0 8px; color: var(--ink-50); }
+
+.two-col { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; }
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+.inclus-card {
+  background: var(--cream);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+.inclus-card h4 { font-family: var(--font-display); text-transform: uppercase; margin-bottom: 16px; }
+.inclus-card ul { list-style: none; padding: 0; margin: 0; }
+.inclus-card li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 2px dashed var(--ink-50);
+  font-weight: 600;
+}
+.inclus-card li:last-child { border-bottom: 0; }
+.inclus-card li::before {
+  content: "✓"; color: var(--red); font-weight: 900; font-size: 18px;
+}
+
+.act-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+}
+@media (max-width: 900px) { .act-grid { grid-template-columns: 1fr 1fr; } }
+.act-tile {
+  background: var(--paper);
+  border: var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 22px; text-align: center;
+  transition: transform .2s;
+}
+.act-tile:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow); }
+.act-tile .e { font-size: 48px; display: block; margin-bottom: 10px; }
+.act-tile h5 { font-family: var(--font-display); font-size: 15px; text-transform: uppercase; margin: 0; }
+
+/* Timeline */
+.timeline { position: relative; margin-top: 40px; }
+.timeline::before {
+  content: "";
+  position: absolute; left: 16px; top: 0; bottom: 0; width: 4px;
+  background-image: linear-gradient(to bottom, var(--yellow) 60%, transparent 0);
+  background-size: 4px 14px;
+  background-repeat: repeat-y;
+}
+.tl-item {
+  display: flex; gap: 20px;
+  padding: 14px 0;
+  position: relative;
+}
+.tl-dot {
+  width: 36px; height: 36px;
+  border: var(--border); border-radius: 50%;
+  background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 14px;
+  box-shadow: 3px 3px 0 0 var(--ink);
+  flex-shrink: 0;
+  z-index: 1;
+}
+.tl-item:nth-child(even) .tl-dot { background: var(--blue); }
+.tl-item:nth-child(3n) .tl-dot { background: var(--yellow); color: var(--ink); }
+.tl-item h5 { font-family: var(--font-display); font-size: 17px; text-transform: uppercase; margin: 2px 0 4px; }
+.tl-item p { margin: 0; color: var(--ink-70); font-size: 14.5px; }
+.tl-time { font-family: var(--font-display); color: var(--red); font-size: 14px; }
+
+/* Formules */
+.formules-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+}
+@media (max-width: 900px) { .formules-grid { grid-template-columns: 1fr; } }
+.formule {
+  background: var(--paper);
+  border: var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 32px 28px;
+  position: relative;
+  transition: transform .2s;
+}
+.formule:hover { transform: translate(-4px,-4px); box-shadow: var(--shadow-lg); }
+.formule.best { background: var(--yellow); transform: translateY(-8px); }
+.formule.best:hover { transform: translate(-4px,-12px); }
+.formule-name { font-family: var(--font-display); font-size: 28px; text-transform: uppercase; margin-bottom: 6px; }
+.formule-price { font-family: var(--font-display); font-size: 56px; color: var(--red); line-height: 1; margin: 10px 0 20px; }
+.formule-badge {
+  position: absolute; top: -16px; right: 20px;
+  background: var(--red); color: #fff;
+  padding: 6px 14px;
+  font-family: var(--font-display); font-size: 13px;
+  border: var(--border); border-radius: 999px;
+  box-shadow: 3px 3px 0 0 var(--ink);
+}
+.formule ul { list-style: none; padding: 0; margin: 0 0 24px; }
+.formule li { padding: 6px 0; font-weight: 600; display: flex; gap: 10px; }
+.formule li::before { content: "✓"; color: var(--red); font-weight: 900; }
+
+/* Options */
+.options { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.option-pill {
+  background: var(--paper);
+  border: var(--border);
+  padding: 12px 20px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font-weight: 700;
+  transition: transform .15s;
+  cursor: pointer;
+}
+.option-pill:hover { background: var(--yellow); transform: translate(-2px,-2px); }
+.option-pill .plus { color: var(--red); font-weight: 900; margin-right: 6px; }
+
+/* Final CTA */
+.p-cta {
+  background: var(--blue); color: #fff; text-align: center;
+}
+.p-cta h2 {
+  font-size: clamp(44px, 6vw, 80px);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER (shared) -->
+<header class="aa-header">
+  <div class="aa-header-inner">
+    <a href="Homepage.html" class="aa-logo" data-logo-click>
+      <img src="assets/logo.png" alt="AnimAction33" />
+      <span class="nom"><span class="b">ANIM</span><span class="r">ACTION</span><span class="b">33</span></span>
+    </a>
+    <nav class="aa-nav">
+      <a href="Homepage.html#prestations" class="active">Prestations</a>
+      <a href="Homepage.html#catalogue">Galerie</a>
+      <a href="Homepage.html#how">À propos</a>
+      <a href="Contact.html">Contact</a>
+    </nav>
+    <div class="aa-header-cta">
+      <a href="tel:0677243675" class="aa-phone">📞 06 77 24 36 75</a>
+      <a href="Contact.html" class="nb-btn nb-btn-small">Devis gratuit</a>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="wrap"><a href="Homepage.html">Accueil</a><span class="sep">›</span><a href="Homepage.html#prestations">Prestations</a><span class="sep">›</span>Anniversaires</div>
+</div>
+
+<!-- HERO -->
+<section class="p-hero">
+  <div class="wrap p-hero-grid">
+    <div>
+      <span class="nb-pill" style="background: var(--red); color:#fff">🎂 Anniversaires • Dès 3 ans</span>
+      <h1>Des anniversaires<br/><span class="accent-red">inoubliables</span></h1>
+      <p class="p-hero-sub">Koh-Lanta miniature, escape game, chasse au trésor… Les enfants repartent avec des étoiles plein les yeux — et les parents aussi.</p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px">
+        <a href="Contact.html" class="nb-btn nb-btn-big">🎯 Réserver cet anniversaire</a>
+        <a href="#formules" class="nb-btn nb-btn-ghost nb-btn-big" style="background:#fff; color:var(--ink); border-color:var(--ink); box-shadow: 6px 6px 0 0 var(--ink)">Voir les formules →</a>
+      </div>
+    </div>
+    <div class="big-emoji">
+      🎂
+      <span class="sticker red">Dès 199€ !</span>
+    </div>
+  </div>
+</section>
+
+<!-- DESCRIPTION + INCLUS -->
+<section class="section">
+  <div class="wrap two-col">
+    <div class="reveal">
+      <span class="eyebrow">POURQUOI NOUS</span>
+      <h2 class="section-title" style="font-size: clamp(36px, 4.5vw, 56px)">Stressé d'organiser<br/>l'anniversaire de votre enfant ?</h2>
+      <p style="font-size: 17px; color: var(--ink-70); margin-bottom: 16px"><b>Le problème.</b> Trouver des idées originales, gérer la logistique, animer 15 gosses en sucre — tout ça en essayant de profiter du moment vous-même. Impossible.</p>
+      <p style="font-size: 17px; color: var(--ink-70); margin-bottom: 16px"><b>La réalité.</b> Les parents finissent épuisés, les enfants s'ennuient au bout d'une heure, les photos sont floues et personne ne se souvient du gâteau.</p>
+      <p style="font-size: 17px; color: var(--ink-70); margin-bottom: 16px"><b>La solution.</b> Gwen débarque avec son matériel, son expérience BAFA/BAFD et ses +30 jeux. Vous vous occupez du gâteau — on s'occupe du reste.</p>
+    </div>
+    <div class="inclus-card reveal d1">
+      <h4>🎁 Ce qui est inclus</h4>
+      <ul>
+        <li>Animateur BAFA + BAFD diplômé</li>
+        <li>Matériel complet (sono, costumes, accessoires)</li>
+        <li>Déplacement inclus (50 km autour de Libourne)</li>
+        <li>Animation personnalisée selon le thème</li>
+        <li>Assurance RC Pro + PSC1 / PSE1</li>
+        <li>Devis gratuit sous 48h</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITÉS -->
+<section class="section" style="background: var(--cream)">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <span class="eyebrow">AU MENU</span>
+      <h2 class="section-title">Des <span class="accent-red">activités</span> qui cartonnent</h2>
+      <p class="section-sub" style="margin:0 auto 50px">8 grands jeux au choix — on adapte selon l'âge, le lieu et le nombre d'enfants.</p>
+    </div>
+    <div class="act-grid">
+      <div class="act-tile reveal"><span class="e">🏝️</span><h5>Koh-Lanta</h5></div>
+      <div class="act-tile reveal d1"><span class="e">🔐</span><h5>Escape Game</h5></div>
+      <div class="act-tile reveal d2"><span class="e">🏆</span><h5>Olympiades</h5></div>
+      <div class="act-tile reveal d3"><span class="e">🕵️</span><h5>Jeu de Rôle</h5></div>
+      <div class="act-tile reveal"><span class="e">🗺️</span><h5>Chasse Trésor</h5></div>
+      <div class="act-tile reveal d1"><span class="e">🎵</span><h5>Blind Test</h5></div>
+      <div class="act-tile reveal d2"><span class="e">🏃</span><h5>Parcours Ninja</h5></div>
+      <div class="act-tile reveal d3"><span class="e">🎭</span><h5>Murder Party</h5></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">UN DÉROULÉ TYPE</span>
+      <h2 class="section-title">Comment ça <span class="accent-blue">s'enchaîne</span></h2>
+      <p class="section-sub">Exemple pour un anniversaire de 2h30 — on adapte selon vos contraintes.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal"><div class="tl-dot">1</div><div><div class="tl-time">14h30</div><h5>Accueil</h5><p>Gwen arrive en avance, installe, check le lieu et accueille les enfants avec de la musique.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-dot">2</div><div><div class="tl-time">15h00</div><h5>Lancement</h5><p>Présentation du scénario. Costumes, équipes, règles — l'aventure commence !</p></div></div>
+      <div class="tl-item reveal"><div class="tl-dot">3</div><div><div class="tl-time">15h15</div><h5>Animation principale</h5><p>Épreuves, énigmes, défis. Rire garanti, chaos maîtrisé, tout le monde participe.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-dot">4</div><div><div class="tl-time">16h30</div><h5>Pause goûter</h5><p>Temps calme pendant que les parents gèrent le gâteau. Musique d'ambiance.</p></div></div>
+      <div class="tl-item reveal"><div class="tl-dot">5</div><div><div class="tl-time">16h45</div><h5>Remise des prix</h5><p>Podium, médailles, photos. Chacun repart fier de son équipe.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULES -->
+<section id="formules" class="section" style="background: var(--paper)">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <span class="eyebrow">3 FORMULES</span>
+      <h2 class="section-title">Choisissez votre <span class="accent-red">niveau</span></h2>
+      <p class="section-sub" style="margin:0 auto 50px">Toutes les formules incluent animateur, matériel et déplacement.</p>
+    </div>
+    <div class="formules-grid">
+      <div class="formule reveal">
+        <div class="formule-name">Découverte</div>
+        <div class="formule-price">199€</div>
+        <ul>
+          <li>1h30 d'animation</li>
+          <li>Jusqu'à 10 enfants</li>
+          <li>1 grand jeu au choix</li>
+          <li>Musique + matériel</li>
+        </ul>
+        <a href="Contact.html" class="nb-btn" style="width:100%; justify-content:center">Choisir</a>
+      </div>
+      <div class="formule best reveal d1">
+        <span class="formule-badge">★ LE + CHOISI</span>
+        <div class="formule-name">Aventure</div>
+        <div class="formule-price">269€</div>
+        <ul>
+          <li>2h30 d'animation</li>
+          <li>Jusqu'à 20 enfants</li>
+          <li>2 grands jeux combinés</li>
+          <li>Costumes + décors</li>
+          <li>Remise de prix incluse</li>
+        </ul>
+        <a href="Contact.html" class="nb-btn nb-btn-blue" style="width:100%; justify-content:center">Choisir</a>
+      </div>
+      <div class="formule reveal d2">
+        <div class="formule-name">Épique</div>
+        <div class="formule-price" style="font-size:36px; padding-top:20px">Sur devis</div>
+        <ul>
+          <li>3h+ d'animation</li>
+          <li>Jusqu'à 40 enfants</li>
+          <li>Scénario sur-mesure</li>
+          <li>2 animateurs</li>
+          <li>Goûter géré (option)</li>
+        </ul>
+        <a href="Contact.html" class="nb-btn" style="width:100%; justify-content:center">Demander</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPTIONS -->
+<section class="section" style="background: var(--cream)">
+  <div class="wrap" style="text-align:center">
+    <div class="reveal">
+      <span class="eyebrow">BONUS</span>
+      <h2 class="section-title">Envie d'en <span class="accent-red">rajouter</span> ?</h2>
+      <p class="section-sub" style="margin:0 auto 40px">Options disponibles en plus de votre formule.</p>
+    </div>
+    <div class="options">
+      <span class="option-pill"><span class="plus">+</span>Barbe à papa · 35€</span>
+      <span class="option-pill"><span class="plus">+</span>Piñata · 25€</span>
+      <span class="option-pill"><span class="plus">+</span>Maquillage · 40€</span>
+      <span class="option-pill"><span class="plus">+</span>2ème animateur · 80€</span>
+      <span class="option-pill"><span class="plus">+</span>Photographe souvenir · 90€</span>
+      <span class="option-pill"><span class="plus">+</span>Goûter complet · sur devis</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section p-cta">
+  <div class="wrap reveal">
+    <span class="sticker" style="background:var(--yellow); transform:rotate(-6deg); font-size:42px">C'est parti !</span>
+    <h2 style="margin-top: 20px">Réserver cet<br/>anniversaire</h2>
+    <p style="color:var(--white-70); margin-bottom: 30px">Devis gratuit sous 48h · Réponse dans la journée en semaine</p>
+    <a href="Contact.html" class="nb-btn nb-btn-big">Demander mon devis</a>
+  </div>
+</section>
+
+<!-- FOOTER (shared) -->
+<footer class="aa-footer">
+  <div class="wrap">
+    <div class="aa-footer-grid">
+      <div>
+        <div class="aa-logo" style="color:#fff; margin-bottom:16px"><img src="assets/logo.png" alt="" /><span style="color:#fff">ANIMACTION33</span></div>
+        <p style="color:var(--white-70); max-width:320px">Animateur événementiel indépendant à Libourne, Gironde.</p>
+      </div>
+      <div><h4>Navigation</h4><ul><li><a href="Homepage.html#prestations">Prestations</a></li><li><a href="Homepage.html#catalogue">Catalogue</a></li><li><a href="Contact.html">Contact</a></li></ul></div>
+      <div><h4>Prestations</h4><ul><li><a href="Anniversaires.html">Anniversaires</a></li><li><a href="#">Mariages</a></li><li><a href="#">EVG / EVF</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li>📞 06 77 24 36 75</li><li>✉️ contact@animaction33.fr</li><li>📍 Libourne, Gironde</li></ul></div>
+    </div>
+    <div class="aa-footer-bottom"><div>© 2026 AnimAction33</div><div>Mentions légales</div></div>
+  </div>
+</footer>
+
+<!-- WhatsApp float -->
+<a href="#" class="whatsapp-float" id="wa-float">
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.9 11.9 0 0 0 12.03 0C5.45 0 .1 5.35.1 11.93c0 2.1.55 4.16 1.6 5.97L0 24l6.27-1.64a11.9 11.9 0 0 0 5.75 1.47h.01c6.57 0 11.93-5.35 11.93-11.93 0-3.19-1.24-6.19-3.44-8.42z"/></svg>
+</a>
+<div class="whatsapp-popup" id="wa-popup">
+  <div style="display:flex; justify-content:space-between"><h5>💬 On discute ?</h5><button class="wa-close" style="font-size:20px">×</button></div>
+  <textarea>Bonjour Gwen, je souhaite organiser un anniversaire !</textarea>
+  <a href="https://wa.me/33677243675" class="nb-btn nb-btn-small" style="background:#25D366; color:#fff; width:100%; justify-content:center">Envoyer</a>
+</div>
+<div class="mobile-sticky-bar">
+  <a href="tel:0677243675" class="call">📞 Appeler</a>
+  <a href="https://wa.me/33677243675" class="wap">💬 WhatsApp</a>
+  <a href="Contact.html" class="dev">📋 Devis</a>
+</div>
+
+<script src="scripts.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks-brand.jsx"></script>
+<script type="text/babel">mountBrandTweaks(TWEAK_DEFAULTS);</script>
+</body>
+</html>

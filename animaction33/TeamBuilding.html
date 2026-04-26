@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Team Building — AnimAction33</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;700&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tb-bg:#0a0a14;
+  --tb-purple:var(--tb-purple);
+  --tb-mint:var(--tb-mint);
+  --tb-text:#ffffff;
+  --tb-display:"Space Grotesk";
+  --tb-mono:"DM Mono";
+  --tb-radius:14px;
+  --tb-blur:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Space Grotesk",sans-serif;background:var(--tb-bg);color:var(--tb-text);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(800px 500px at 15% 20%,color-mix(in srgb,var(--tb-purple) 25%,transparent),transparent 50%),radial-gradient(700px 500px at 85% 70%,color-mix(in srgb,var(--tb-mint) 18%,transparent),transparent 50%);pointer-events:none;z-index:0}
+body>*{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+
+.header{padding:20px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(10,10,20,.6);border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:10}
+.logo{font-family:"Space Grotesk";font-weight:700;font-size:20px;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
+.logo .dot{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav{display:flex;gap:28px;font-size:14px;color:rgba(255,255,255,.7)}
+.nav a:hover{color:#fff}
+.btn-g{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));color:#0a0a14;border-radius:999px;font-weight:600;font-size:13px;transition:transform .2s}
+.btn-g:hover{transform:translateY(-2px)}
+.btn-ghost{padding:10px 20px;border:1px solid rgba(255,255,255,.15);border-radius:999px;font-size:13px;color:#fff;background:rgba(255,255,255,.03);backdrop-filter:blur(10px);display:inline-block}
+.btn-ghost:hover{background:rgba(255,255,255,.08)}
+
+.crumb{padding:14px 40px;font-family:"DM Mono";font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.08);background:rgba(10,10,20,.4)}
+.crumb a:hover{color:var(--tb-mint)}
+.crumb .sep{margin:0 10px;color:rgba(255,255,255,.3)}
+
+/* Hero */
+.hero{padding:80px 40px 60px;text-align:center;max-width:1200px;margin:0 auto}
+.tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);padding:8px 16px;border-radius:999px;font-size:12px;color:#9ca3af;margin-bottom:30px;font-family:"DM Mono";letter-spacing:1.5px;text-transform:uppercase}
+.tag .live-dot{width:6px;height:6px;background:var(--tb-mint);border-radius:50%;animation:blink 1.4s infinite;box-shadow:0 0 8px var(--tb-mint)}
+@keyframes blink{50%{opacity:.3}}
+.hero h1{font-family:"Space Grotesk";font-weight:500;font-size:96px;letter-spacing:-0.04em;line-height:.95;margin-bottom:24px}
+.hero h1 .grad{background:linear-gradient(135deg,var(--tb-purple) 0%,var(--tb-mint) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
+.hero p{color:rgba(255,255,255,.6);font-size:19px;max-width:680px;margin:0 auto 32px;line-height:1.55}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+
+/* Hero stats */
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:0 auto}
+.h-stat{padding:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;backdrop-filter:blur(20px);text-align:left}
+.h-stat b{font-family:"Space Grotesk";font-weight:700;font-size:30px;letter-spacing:-0.02em;display:block;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-stat span{font-size:11px;color:rgba(255,255,255,.55);font-family:"DM Mono";letter-spacing:1.5px;text-transform:uppercase}
+
+/* Why band */
+.sec-g{padding:90px 40px}
+.sec-g.tight{padding-top:40px}
+.sec-head{text-align:center;margin-bottom:50px;max-width:800px;margin-left:auto;margin-right:auto}
+.sec-head .kicker{font-family:"DM Mono";font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--tb-mint);margin-bottom:12px}
+.sec-head h2{font-family:"Space Grotesk";font-weight:500;font-size:60px;letter-spacing:-0.03em;line-height:1}
+.sec-head h2 em{font-style:italic;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sec-head p{color:rgba(255,255,255,.55);font-size:17px;margin-top:16px;line-height:1.55}
+
+/* Why cards */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto}
+.why-card{padding:32px;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);border-radius:20px;backdrop-filter:blur(20px);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.why-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,color-mix(in srgb,var(--tb-purple) 10%,transparent),transparent 60%);opacity:0;transition:opacity .3s}
+.why-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--tb-mint) 30%,transparent)}
+.why-card:hover::before{opacity:1}
+.why-card .ic{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--tb-purple) 20%,transparent),color-mix(in srgb,var(--tb-mint) 15%,transparent));display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08)}
+.why-card h3{font-family:"Space Grotesk";font-weight:600;font-size:22px;letter-spacing:-0.01em;margin-bottom:8px}
+.why-card p{color:rgba(255,255,255,.6);font-size:14.5px;line-height:1.55}
+
+/* Activities — terminal-style */
+.acts-tb{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:1200px;margin:0 auto}
+.act-tb{padding:28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:18px;backdrop-filter:blur(20px);display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;transition:border-color .3s,transform .2s}
+.act-tb:hover{border-color:color-mix(in srgb,var(--tb-purple) 40%,transparent);transform:translateY(-2px)}
+.act-tb .a-num{font-family:"DM Mono";font-size:11px;color:var(--tb-mint);letter-spacing:2px;width:30px}
+.act-tb h4{font-family:"Space Grotesk";font-weight:600;font-size:20px;letter-spacing:-0.01em;margin-bottom:4px}
+.act-tb p{color:rgba(255,255,255,.55);font-size:13.5px;line-height:1.5}
+.act-tb .meta{display:flex;flex-direction:column;gap:6px;align-items:flex-end;font-family:"DM Mono";font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.55)}
+.act-tb .meta .dur{padding:4px 10px;background:color-mix(in srgb,var(--tb-mint) 10%,transparent);border:1px solid color-mix(in srgb,var(--tb-mint) 25%,transparent);border-radius:999px;color:var(--tb-mint)}
+
+/* Process timeline */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1200px;margin:0 auto;position:relative}
+.proc::before{content:"";position:absolute;top:30px;left:60px;right:60px;height:1px;background:linear-gradient(90deg,var(--tb-purple),var(--tb-mint));opacity:.4;z-index:0}
+.proc-step{position:relative;z-index:1;text-align:center}
+.proc-step .step-num{width:60px;height:60px;border-radius:50%;background:var(--tb-bg);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:"Space Grotesk";font-weight:700;font-size:22px;letter-spacing:-0.02em;background-image:linear-gradient(135deg,color-mix(in srgb,var(--tb-purple) 20%,transparent),color-mix(in srgb,var(--tb-mint) 15%,transparent));backdrop-filter:blur(10px)}
+.proc-step h4{font-family:"Space Grotesk";font-weight:600;font-size:18px;margin-bottom:8px}
+.proc-step p{color:rgba(255,255,255,.55);font-size:13.5px;line-height:1.5}
+.proc-step .day{font-family:"DM Mono";font-size:10px;letter-spacing:2px;color:var(--tb-mint);text-transform:uppercase;margin-bottom:6px}
+
+/* Pricing */
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1200px;margin:0 auto}
+.price-card{padding:36px 28px;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);border-radius:22px;backdrop-filter:blur(20px);display:flex;flex-direction:column;gap:18px;position:relative}
+.price-card.feat{background:linear-gradient(135deg,color-mix(in srgb,var(--tb-purple) 18%,transparent),color-mix(in srgb,var(--tb-mint) 10%,transparent));border-color:color-mix(in srgb,var(--tb-purple) 40%,transparent)}
+.price-card.feat .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));color:#0a0a14;padding:5px 14px;border-radius:999px;font-family:"DM Mono";font-size:10px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase}
+.price-card .label{font-family:"DM Mono";font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--tb-mint)}
+.price-card h3{font-family:"Space Grotesk";font-weight:600;font-size:30px;letter-spacing:-0.02em}
+.price-card .price{font-family:"Space Grotesk";font-weight:700;font-size:48px;letter-spacing:-0.03em;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.price-card .price small{display:block;font-family:"DM Mono";font-size:11px;letter-spacing:1.5px;font-weight:400;color:rgba(255,255,255,.5);background:none;-webkit-text-fill-color:rgba(255,255,255,.5);margin-top:6px}
+.price-card ul{list-style:none;border-top:1px solid rgba(255,255,255,.08);padding-top:18px}
+.price-card li{padding:9px 0;font-size:14px;display:flex;gap:10px;color:rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.05)}
+.price-card li:last-child{border-bottom:0}
+.price-card li::before{content:"→";color:var(--tb-mint);font-weight:700}
+.price-card .btn-g,.price-card .btn-ghost{margin-top:auto;text-align:center;justify-content:center;width:100%}
+
+/* Logos band */
+.logos{padding:50px 40px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+.logos-row{display:flex;justify-content:center;gap:60px;flex-wrap:wrap;align-items:center;font-family:"Space Grotesk";font-weight:600;font-size:18px;color:rgba(255,255,255,.4);letter-spacing:-0.01em}
+.logos-row span{transition:color .2s}
+.logos-row span:hover{color:rgba(255,255,255,.8)}
+
+/* Testimonial */
+.testi-tb{padding:90px 40px;text-align:center;max-width:1000px;margin:0 auto}
+.testi-tb blockquote{font-family:"Space Grotesk";font-weight:300;font-size:42px;line-height:1.25;letter-spacing:-0.02em;margin-bottom:24px}
+.testi-tb blockquote em{font-style:italic;background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.testi-tb cite{font-family:"DM Mono";font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.5);font-style:normal}
+.testi-tb cite b{color:#fff;font-weight:700}
+
+/* CTA */
+.cta-g{padding:120px 40px;text-align:center;max-width:900px;margin:0 auto;position:relative}
+.cta-g::before{content:"";position:absolute;inset:-40px;background:radial-gradient(600px 300px at 50% 50%,color-mix(in srgb,var(--tb-purple) 18%,transparent),transparent 70%);pointer-events:none}
+.cta-g > *{position:relative}
+.cta-g h2{font-family:"Space Grotesk";font-weight:500;font-size:80px;letter-spacing:-0.04em;line-height:.95;margin-bottom:24px}
+.cta-g h2 .g{background:linear-gradient(135deg,var(--tb-purple),var(--tb-mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
+.cta-g p{color:rgba(255,255,255,.55);font-size:18px;margin-bottom:32px;line-height:1.55}
+
+.footer-tb{padding:36px 40px;display:flex;justify-content:space-between;font-family:"DM Mono";font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.5);border-top:1px solid rgba(255,255,255,.08)}
+
+@media (max-width:900px){
+  .hero h1{font-size:54px}
+  .hero-stats,.why-grid,.acts-tb,.proc,.pricing{grid-template-columns:1fr}
+  .proc::before{display:none}
+  .testi-tb blockquote{font-size:28px}
+  .cta-g h2{font-size:48px}
+  .sec-head h2{font-size:38px}
+}
+</style></head>
+<body data-presta-page="team">
+
+<header class="header">
+  <a href="../Homepage.html" class="logo"><span class="dot">🐵</span>animaction<span style="color:rgba(255,255,255,.4)">33</span></a>
+  <nav class="nav">
+    <a href="../Homepage.html#prestations">Prestations</a>
+    <a href="../Homepage.html#catalogue">Galerie</a>
+    <a href="../Homepage.html#how">Studio</a>
+    <a href="../Contact.html">Contact</a>
+  </nav>
+  <a href="../Contact.html" class="btn-g">Demander un devis →</a>
+</header>
+
+<div class="crumb">
+  <a href="../Homepage.html">Accueil</a><span class="sep">/</span>
+  <a href="../Homepage.html#prestations">Prestations</a><span class="sep">/</span>
+  Team Building
+</div>
+
+<section class="hero">
+  <span class="tag"><span class="live-dot"></span>Disponibilités Q2 2026 · Bordeaux + 80km</span>
+  <h1>Du team building<br/>qui <span class="grad">ressoude vraiment.</span></h1>
+  <p>On conçoit des journées d'équipe pensées comme des produits — objectifs RH clairs, KPIs mesurables, exécution millimétrée. Zéro animation cliché, zéro chute de cohésion à la rentrée.</p>
+  <div class="cta-row">
+    <a href="../Contact.html" class="btn-g">⚡ Lancer un brief</a>
+    <a href="#formules" class="btn-ghost">Voir les formules</a>
+  </div>
+  <div class="hero-stats">
+    <div class="h-stat"><b>180+</b><span>Équipes accompagnées</span></div>
+    <div class="h-stat"><b>96%</b><span>NPS post-événement</span></div>
+    <div class="h-stat"><b>5–250</b><span>Participants / session</span></div>
+    <div class="h-stat"><b>48h</b><span>Pour un devis chiffré</span></div>
+  </div>
+</section>
+
+<section class="sec-g">
+  <div class="sec-head">
+    <div class="kicker">// POURQUOI NOUS</div>
+    <h2>Trois <em>raisons</em> de signer.</h2>
+    <p>Approche structurée, terrain depuis 10 ans, livrables RH exploitables. Le reste, c'est de la déco.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="ic">🎯</div>
+      <h3>Objectifs alignés RH</h3>
+      <p>Chaque journée commence par un brief avec votre RH ou votre manager. Cohésion, intégration, post-fusion — on calibre les épreuves selon l'objectif réel.</p>
+    </div>
+    <div class="why-card">
+      <div class="ic">📊</div>
+      <h3>Livrables mesurables</h3>
+      <p>Debrief écrit, restitution photo / vidéo, recommandations managériales basées sur les observations terrain. Pas que de l'animation : un vrai input RH.</p>
+    </div>
+    <div class="why-card">
+      <div class="ic">⚙️</div>
+      <h3>Exécution sans risque</h3>
+      <p>RC Pro, PSC1/PSE1, matériel pro, plans B météo. 10 ans de terrain, zéro incident notable. Vous n'avez à gérer que la facture.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec-g tight">
+  <div class="sec-head">
+    <div class="kicker">// CATALOGUE</div>
+    <h2>Huit <em>formats</em> au choix.</h2>
+    <p>Chaque format est combinable — la plupart des journées en assemblent 3 à 4.</p>
+  </div>
+  <div class="acts-tb">
+    <div class="act-tb"><div class="a-num">01</div><div><h4>Olympiades stratégiques</h4><p>10 épreuves mêlant cerveau et corps. Équipes mixées par algorithme RH.</p></div><div class="meta"><span class="dur">3h–5h</span><span>5–80 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">02</div><div><h4>Escape outdoor</h4><p>Énigmes urbaines en équipe sur Bordeaux ou Saint-Émilion. 90 min chrono.</p></div><div class="meta"><span class="dur">1h30</span><span>10–60 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">03</div><div><h4>Crisis simulation</h4><p>Scénario de gestion de crise · prise de décision sous pression. Pour Codir.</p></div><div class="meta"><span class="dur">2h–3h</span><span>5–25 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">04</div><div><h4>Co-création workshop</h4><p>Design sprint version Lego Serious Play. Pour brainstorms produit ou stratégie.</p></div><div class="meta"><span class="dur">3h</span><span>5–30 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">05</div><div><h4>Murder party corporate</h4><p>Enquête en équipe, rôles distribués selon profils DISC. Bluff vs analyse.</p></div><div class="meta"><span class="dur">2h30</span><span>15–50 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">06</div><div><h4>Quiz inter-équipes</h4><p>Format télé avec buzzers, vidéo perso, gages. Idéal soirée de séminaire.</p></div><div class="meta"><span class="dur">1h30</span><span>10–250 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">07</div><div><h4>Koh-Lanta entreprise</h4><p>Épreuves physiques + mentales · totem · conseil. Format full day en pleine nature.</p></div><div class="meta"><span class="dur">6h</span><span>10–80 pers.</span></div></div>
+    <div class="act-tb"><div class="a-num">08</div><div><h4>Soirée de gala</h4><p>Animation montée pour clore un séminaire — speech surprise, jeux, ambiance.</p></div><div class="meta"><span class="dur">2h–4h</span><span>30–250 pers.</span></div></div>
+  </div>
+</section>
+
+<section class="sec-g tight">
+  <div class="sec-head">
+    <div class="kicker">// PROCESS</div>
+    <h2>Quatre <em>étapes</em>, zéro friction.</h2>
+  </div>
+  <div class="proc">
+    <div class="proc-step">
+      <div class="step-num">01</div>
+      <div class="day">J0</div>
+      <h4>Brief RH</h4>
+      <p>Visio 30 min · objectifs · contraintes · profils des équipes.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-num">02</div>
+      <div class="day">J+2</div>
+      <h4>Proposition</h4>
+      <p>Programme détaillé · devis · planning · liste matériel.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-num">03</div>
+      <div class="day">JOUR J</div>
+      <h4>Exécution</h4>
+      <p>On arrive 2h avant · setup · animation · debriefing live.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-num">04</div>
+      <div class="day">J+7</div>
+      <h4>Restitution</h4>
+      <p>Rapport écrit · photos / vidéos · recommandations RH.</p>
+    </div>
+  </div>
+</section>
+
+<section class="logos">
+  <div class="sec-head" style="margin-bottom:30px"><div class="kicker">// ILS NOUS ONT FAIT CONFIANCE</div></div>
+  <div class="logos-row">
+    <span>CHÂTEAU PALMER</span>
+    <span>EDF · BORDEAUX</span>
+    <span>CABINET LERAY</span>
+    <span>WEBHELP</span>
+    <span>VINCI · GIRONDE</span>
+    <span>NUXEO</span>
+  </div>
+</section>
+
+<section id="formules" class="sec-g">
+  <div class="sec-head">
+    <div class="kicker">// FORMULES</div>
+    <h2>Trois <em>formats</em>, un même standard.</h2>
+    <p>Tous nos forfaits incluent brief RH, exécution, restitution. Pas de variable cachée.</p>
+  </div>
+  <div class="pricing">
+    <div class="price-card">
+      <div class="label">Demi-journée</div>
+      <h3>Sprint</h3>
+      <div class="price">À partir de 599€<small>HT · 3h · jusqu'à 30 pers.</small></div>
+      <ul>
+        <li>Brief RH · 30 min visio</li>
+        <li>2 activités combinées</li>
+        <li>Animateur · matériel inclus</li>
+        <li>Debrief live · 15 min</li>
+      </ul>
+      <a href="../Contact.html" class="btn-ghost">Choisir Sprint</a>
+    </div>
+    <div class="price-card feat">
+      <span class="badge">★ Best-seller</span>
+      <div class="label">Journée complète</div>
+      <h3>Standard</h3>
+      <div class="price">À partir de 1490€<small>HT · 6h · jusqu'à 80 pers.</small></div>
+      <ul>
+        <li>Brief RH · visio + onsite recce</li>
+        <li>4 activités enchaînées + debrief</li>
+        <li>Photographe + vidéo · 4h</li>
+        <li>Rapport écrit · J+7</li>
+        <li>Plan B météo intégré</li>
+        <li>Recommandations managériales</li>
+      </ul>
+      <a href="../Contact.html" class="btn-g">Choisir Standard</a>
+    </div>
+    <div class="price-card">
+      <div class="label">Sur-mesure</div>
+      <h3>Enterprise</h3>
+      <div class="price">Sur devis<small>2 jours+ · &gt;100 personnes</small></div>
+      <ul>
+        <li>Conception sur-mesure</li>
+        <li>2 à 4 animateurs dédiés</li>
+        <li>Coordination logistique complète</li>
+        <li>Live streaming · option</li>
+        <li>Account manager dédié</li>
+      </ul>
+      <a href="../Contact.html" class="btn-ghost">Demander un devis</a>
+    </div>
+  </div>
+</section>
+
+<section class="testi-tb">
+  <span class="tag" style="margin-bottom:30px"><span class="live-dot"></span>NPS 96 · 180+ équipes</span>
+  <blockquote>« Premier prestataire qui m'a livré <em>un debrief actionnable</em> derrière la journée. On a réutilisé les observations en revue de perf. »</blockquote>
+  <cite>— <b>Sophie M.</b> · DRH · Cabinet Leray (45 collab.)</cite>
+</section>
+
+<section class="cta-g">
+  <h2>Brief reçu sous 24h.<br/>Devis sous <span class="g">48h</span>.</h2>
+  <p>Dites-nous où, quand, combien — on revient avec un programme structuré, un budget transparent, et un plan B pour la pluie.</p>
+  <div class="cta-row" style="margin-bottom:0">
+    <a href="../Contact.html" class="btn-g">⚡ Démarrer un brief</a>
+    <a href="tel:0677243675" class="btn-ghost">📞 06 77 24 36 75</a>
+  </div>
+</section>
+
+<footer class="footer-tb">
+  <span>© 2026 ANIMACTION33 — LIBOURNE, GIRONDE · SIRET 000 000 000 00000</span>
+  <span>06 77 24 36 75 · CONTACT@ANIMACTION33.FR</span>
+</footer>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "preset": "Glass",
+  "bg": "#0a0a14",
+  "purple": "#8a5cff",
+  "mint": "#2EE6BD",
+  "text": "#ffffff",
+  "display": "Space Grotesk",
+  "mono": "DM Mono",
+  "radius": 14,
+  "blur": 20,
+  "h1Size": 96,
+  "h2Size": 60,
+  "ctaSize": 80,
+  "secPad": 90,
+  "glow": 1
+}/*EDITMODE-END*/;
+
+function App(){
+  const [t,setT] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(()=>{
+    const r = document.documentElement.style;
+    r.setProperty("--tb-bg",t.bg);
+    r.setProperty("--tb-purple",t.purple);
+    r.setProperty("--tb-mint",t.mint);
+    r.setProperty("--tb-text",t.text);
+    r.setProperty("--tb-display",`"${t.display}"`);
+    r.setProperty("--tb-mono",`"${t.mono}"`);
+    r.setProperty("--tb-radius",t.radius+"px");
+    r.setProperty("--tb-blur",t.blur+"px");
+    // body background gradient overlay opacity via document.body style
+    const h1 = document.querySelector(".hero h1"); if(h1) h1.style.fontSize=t.h1Size+"px";
+    document.querySelectorAll(".sec-head h2").forEach(el=>el.style.fontSize=t.h2Size+"px");
+    const cta = document.querySelector(".cta-g h2"); if(cta) cta.style.fontSize=t.ctaSize+"px";
+    document.querySelectorAll(".sec-g").forEach(el=>el.style.padding=t.secPad+"px 40px");
+    // apply font-family to elements using Space Grotesk
+    document.querySelectorAll('[style*="Space Grotesk"], .hero h1, .sec-head h2').forEach(el=>{
+      el.style.fontFamily = `"${t.display}", sans-serif`;
+    });
+  },[t]);
+
+  function applyPreset(name){
+    const p = {
+      "Glass":      {bg:"#0a0a14",purple:"#8a5cff",mint:"#2EE6BD",text:"#ffffff"},
+      "Sunset":     {bg:"#1a0a14",purple:"#FF6EC7",mint:"#FFB627",text:"#ffffff"},
+      "Forest":     {bg:"#0a1410",purple:"#10B981",mint:"#84CC16",text:"#ECFDF5"},
+      "Ocean":      {bg:"#021327",purple:"#0EA5E9",mint:"#06B6D4",text:"#F0F9FF"},
+      "Nordic":     {bg:"#1a1d23",purple:"#88C0D0",mint:"#A3BE8C",text:"#ECEFF4"},
+      "Hot Pink":   {bg:"#0a0014",purple:"#EC4899",mint:"#F472B6",text:"#FCE7F3"},
+      "Light":      {bg:"#F4F4F5",purple:"#6366F1",mint:"#10B981",text:"#18181B"},
+      "Crypto":     {bg:"#000000",purple:"#F7931A",mint:"#00FF41",text:"#FFFFFF"},
+    }[name];
+    if(!p) return;
+    setT("preset",name);
+    Object.entries(p).forEach(([k,v])=>setT(k,v));
+  }
+
+  return (
+    <TweaksPanel title="Tweaks · Glass">
+      <TweakSection label="Preset" />
+      <TweakSelect label="Theme" value={t.preset} options={["Glass","Sunset","Forest","Ocean","Nordic","Hot Pink","Light","Crypto"]} onChange={applyPreset}/>
+
+      <TweakSection label="Couleurs" />
+      <TweakColor label="Background" value={t.bg} onChange={v=>setT("bg",v)}/>
+      <TweakColor label="Gradient A" value={t.purple} onChange={v=>setT("purple",v)}/>
+      <TweakColor label="Gradient B" value={t.mint} onChange={v=>setT("mint",v)}/>
+      <TweakColor label="Texte" value={t.text} onChange={v=>setT("text",v)}/>
+
+      <TweakSection label="Typographie" />
+      <TweakSelect label="Display" value={t.display} options={["Space Grotesk","Inter","Manrope","Outfit","DM Sans"]} onChange={v=>setT("display",v)}/>
+      <TweakSelect label="Mono" value={t.mono} options={["DM Mono","JetBrains Mono","IBM Plex Mono","Space Mono"]} onChange={v=>setT("mono",v)}/>
+      <TweakSlider label="Taille H1" value={t.h1Size} min={48} max={160} unit="px" onChange={v=>setT("h1Size",v)}/>
+      <TweakSlider label="Taille H2" value={t.h2Size} min={32} max={120} unit="px" onChange={v=>setT("h2Size",v)}/>
+      <TweakSlider label="Taille CTA" value={t.ctaSize} min={40} max={140} unit="px" onChange={v=>setT("ctaSize",v)}/>
+
+      <TweakSection label="Forme" />
+      <TweakSlider label="Border radius" value={t.radius} min={0} max={40} unit="px" onChange={v=>setT("radius",v)}/>
+      <TweakSlider label="Blur" value={t.blur} min={0} max={40} unit="px" onChange={v=>setT("blur",v)}/>
+      <TweakSlider label="Padding section" value={t.secPad} min={30} max={200} unit="px" onChange={v=>setT("secPad",v)}/>
+    </TweaksPanel>
+  );
+}
+
+const __mount = document.createElement("div");
+document.body.appendChild(__mount);
+ReactDOM.createRoot(__mount).render(<App/>);
+</script>
+<script src="presta-flags.js"></script>
+</body></html>

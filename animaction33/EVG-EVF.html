@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>EVG / EVF — Neon Vegas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Audiowide&family=Bungee&family=Bungee+Shade&family=Bungee+Inline&family=Rubik+Mono+One&family=Press+Start+2P&family=VT323&family=Major+Mono+Display&family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0014; --bg2:#1a0033;
+  --neon-pink:#FF2EC4; --neon-cyan:#00F0FF; --neon-yellow:#FFE600;
+  --neon-purple:#A855F7; --neon-green:#39FF14;
+  --display:"Monoton"; --label:"Audiowide"; --body:"Space Grotesk"; --price:"Bungee";
+  --glow:1; --scan:1; --grain:0; --flicker:1;
+  --pad-sec:80px; --radius:14px;
+}
+html,body{background:var(--bg);color:#fff;font-family:var(--body),sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;
+  background:
+    radial-gradient(800px 500px at 20% 20%,color-mix(in srgb,var(--neon-pink) 25%,transparent),transparent 60%),
+    radial-gradient(700px 600px at 80% 70%,color-mix(in srgb,var(--neon-cyan) 18%,transparent),transparent 55%),
+    radial-gradient(500px 400px at 50% 50%,color-mix(in srgb,var(--neon-purple) 15%,transparent),transparent 60%);
+  pointer-events:none;z-index:0;opacity:var(--glow)}
+body::after{content:"";position:fixed;inset:0;background:
+  repeating-linear-gradient(0deg,transparent 0 2px,rgba(255,255,255,.02) 2px 3px);pointer-events:none;z-index:1;opacity:var(--scan)}
+body.grain::after{background:
+  repeating-linear-gradient(0deg,transparent 0 2px,rgba(255,255,255,.02) 2px 3px),
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence baseFrequency='.9'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.4'/></svg>")}
+body>*{position:relative;z-index:2}
+a{color:inherit;text-decoration:none}
+
+.bar{padding:14px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);background:rgba(10,0,20,.6);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10}
+.bar .logo{font-family:var(--label);font-size:20px;letter-spacing:.04em;color:var(--neon-pink);text-shadow:0 0 16px color-mix(in srgb,var(--neon-pink) 70%,transparent)}
+.bar .right{display:flex;gap:18px;font-family:var(--body);font-size:13px;color:rgba(255,255,255,.7)}
+.bar .right a:hover{color:var(--neon-cyan)}
+.btn-neon{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;font-family:var(--label);letter-spacing:.06em;font-size:13px;text-transform:uppercase;
+  background:transparent;color:var(--neon-yellow);border:2px solid var(--neon-yellow);border-radius:6px;
+  box-shadow:inset 0 0 12px color-mix(in srgb,var(--neon-yellow) 20%,transparent),0 0 16px color-mix(in srgb,var(--neon-yellow) 40%,transparent);
+  transition:all .2s;cursor:pointer}
+.btn-neon:hover{background:var(--neon-yellow);color:#0a0014;box-shadow:0 0 24px color-mix(in srgb,var(--neon-yellow) 80%,transparent),inset 0 0 16px rgba(255,255,255,.5)}
+.btn-neon.pink{color:var(--neon-pink);border-color:var(--neon-pink);box-shadow:inset 0 0 12px color-mix(in srgb,var(--neon-pink) 20%,transparent),0 0 16px color-mix(in srgb,var(--neon-pink) 40%,transparent)}
+.btn-neon.pink:hover{background:var(--neon-pink);color:#fff;box-shadow:0 0 24px color-mix(in srgb,var(--neon-pink) 80%,transparent)}
+.btn-neon.cyan{color:var(--neon-cyan);border-color:var(--neon-cyan);box-shadow:inset 0 0 12px color-mix(in srgb,var(--neon-cyan) 20%,transparent),0 0 16px color-mix(in srgb,var(--neon-cyan) 40%,transparent)}
+.btn-neon.cyan:hover{background:var(--neon-cyan);color:#0a0014;box-shadow:0 0 24px color-mix(in srgb,var(--neon-cyan) 80%,transparent)}
+
+/* Hero */
+.hero{padding:60px 28px 40px;text-align:center;position:relative}
+.hero[data-stamp="1"]::before{content:attr(data-stamp-text);position:absolute;font-family:"Bungee Shade";font-size:60px;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--neon-pink) 22%,transparent);top:14px;left:50%;transform:translateX(-50%);letter-spacing:.18em;pointer-events:none;opacity:.5}
+.tag-live{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--neon-cyan);border-radius:999px;font-family:var(--body);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--neon-cyan);margin-bottom:24px;background:color-mix(in srgb,var(--neon-cyan) 6%,transparent);box-shadow:0 0 12px color-mix(in srgb,var(--neon-cyan) 30%,transparent)}
+.tag-live .dot{width:8px;height:8px;background:var(--neon-cyan);border-radius:50%;box-shadow:0 0 10px var(--neon-cyan);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.hero h1{font-family:var(--display);line-height:.9;letter-spacing:.04em;text-transform:uppercase;color:var(--neon-pink);text-shadow:0 0 30px color-mix(in srgb,var(--neon-pink) 70%,transparent),0 0 60px color-mix(in srgb,var(--neon-pink) 50%,transparent),0 0 90px color-mix(in srgb,var(--neon-pink) 30%,transparent);margin-bottom:18px;font-size:var(--h1, 140px)}
+.hero h1.flicker{animation:flicker 6s infinite}
+@keyframes flicker{0%,18%,22%,25%,53%,57%,100%{opacity:1}19%,24%,55%{opacity:.6}}
+.hero h1 .alt{color:var(--neon-cyan);text-shadow:0 0 30px color-mix(in srgb,var(--neon-cyan) 70%,transparent),0 0 60px color-mix(in srgb,var(--neon-cyan) 50%,transparent)}
+.hero .sub{font-family:var(--label);font-size:24px;letter-spacing:.04em;color:var(--neon-yellow);text-shadow:0 0 12px color-mix(in srgb,var(--neon-yellow) 70%,transparent);margin-bottom:18px;text-transform:uppercase}
+.hero p{font-family:var(--body);font-size:17px;color:rgba(255,255,255,.7);max-width:620px;margin:0 auto 30px;line-height:1.55}
+.hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* Stats marquee */
+.stats-strip{padding:30px 0;border-top:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);border-bottom:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);overflow:hidden;background:color-mix(in srgb,var(--neon-pink) 5%,transparent)}
+.strip-track{display:flex;gap:60px;animation:slide var(--strip-speed,30s) linear infinite;font-family:var(--label);font-size:30px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.strip-track span{color:var(--neon-cyan);text-shadow:0 0 12px color-mix(in srgb,var(--neon-cyan) 60%,transparent)}
+.strip-track .alt{color:var(--neon-pink);text-shadow:0 0 12px color-mix(in srgb,var(--neon-pink) 60%,transparent)}
+.strip-track .div{color:var(--neon-yellow)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Sections */
+.sec{padding:var(--pad-sec) 32px}
+.sec-h{text-align:center;margin-bottom:50px;max-width:900px;margin-left:auto;margin-right:auto}
+.sec-h .label{display:inline-block;font-family:var(--label);font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-yellow);text-shadow:0 0 12px color-mix(in srgb,var(--neon-yellow) 70%,transparent);margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--neon-yellow) 40%,transparent)}
+.sec-h h2{font-family:var(--display);font-size:80px;line-height:1;letter-spacing:.03em;text-transform:uppercase;color:#fff;text-shadow:0 0 24px rgba(255,255,255,.3),0 0 50px color-mix(in srgb,var(--neon-pink) 50%,transparent)}
+.sec-h h2 .p{color:var(--neon-pink);text-shadow:0 0 30px color-mix(in srgb,var(--neon-pink) 80%,transparent)}
+.sec-h h2 .c{color:var(--neon-cyan);text-shadow:0 0 30px color-mix(in srgb,var(--neon-cyan) 80%,transparent)}
+.sec-h p{font-family:var(--body);color:rgba(255,255,255,.55);font-size:17px;margin-top:18px;line-height:1.55}
+
+/* Slot defis */
+.slot{display:grid;grid-template-columns:repeat(var(--cols-defis,4),1fr);gap:14px;max-width:1300px;margin:0 auto}
+.slot-card{padding:26px 22px;background:rgba(10,0,20,.6);border:2px solid color-mix(in srgb,var(--neon-pink) 40%,transparent);border-radius:var(--radius);backdrop-filter:blur(10px);position:relative;overflow:hidden;transition:all .3s}
+.slot-card:nth-child(2n){border-color:color-mix(in srgb,var(--neon-cyan) 40%,transparent)}
+.slot-card:nth-child(3n){border-color:color-mix(in srgb,var(--neon-yellow) 40%,transparent)}
+.slot-card:nth-child(4n){border-color:color-mix(in srgb,var(--neon-purple) 50%,transparent)}
+.slot-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon-pink),transparent);opacity:.6}
+.slot-card:nth-child(2n)::before{background:linear-gradient(90deg,transparent,var(--neon-cyan),transparent)}
+.slot-card:nth-child(3n)::before{background:linear-gradient(90deg,transparent,var(--neon-yellow),transparent)}
+.slot-card:nth-child(4n)::before{background:linear-gradient(90deg,transparent,var(--neon-purple),transparent)}
+.slot-card:hover{transform:translateY(-6px);box-shadow:0 0 30px color-mix(in srgb,var(--neon-pink) 40%,transparent)}
+.slot-card .num{font-family:"Bungee Shade";font-size:60px;line-height:.9;color:var(--neon-pink);margin-bottom:8px;letter-spacing:-0.02em}
+.slot-card:nth-child(2n) .num{color:var(--neon-cyan)}
+.slot-card:nth-child(3n) .num{color:var(--neon-yellow)}
+.slot-card:nth-child(4n) .num{color:var(--neon-purple)}
+.slot-card h3{font-family:var(--label);font-size:20px;letter-spacing:.02em;text-transform:uppercase;line-height:1.05;margin-bottom:8px}
+.slot-card p{font-family:var(--body);font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:14px}
+.slot-card .meta{display:flex;justify-content:space-between;font-family:var(--body);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);padding-top:10px;border-top:1px dashed rgba(255,255,255,.15)}
+.slot-card .meta .badge{color:var(--neon-green);text-shadow:0 0 8px color-mix(in srgb,var(--neon-green) 50%,transparent)}
+
+/* Pull */
+.pull-vegas{padding:120px 32px;text-align:center;border-top:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);border-bottom:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);background:radial-gradient(ellipse at center,color-mix(in srgb,var(--neon-pink) 10%,transparent),transparent 70%);position:relative}
+.pull-vegas blockquote{font-family:"Bungee";font-size:90px;line-height:.95;letter-spacing:.01em;text-transform:uppercase;max-width:1100px;margin:0 auto;color:#fff;text-shadow:0 0 24px color-mix(in srgb,var(--neon-pink) 50%,transparent)}
+.pull-vegas blockquote em{color:var(--neon-yellow);text-shadow:0 0 30px color-mix(in srgb,var(--neon-yellow) 80%,transparent);font-style:normal}
+.pull-vegas cite{display:block;font-family:var(--label);font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-cyan);margin-top:30px;text-shadow:0 0 12px color-mix(in srgb,var(--neon-cyan) 60%,transparent);font-style:normal}
+
+/* Forfaits */
+.forfaits-v{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1300px;margin:0 auto}
+.fv{padding:36px 28px;background:rgba(10,0,20,.7);border:2px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);border-radius:18px;backdrop-filter:blur(10px);display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden;transition:.3s}
+.fv:hover{transform:translateY(-6px);border-color:var(--neon-pink);box-shadow:0 0 40px color-mix(in srgb,var(--neon-pink) 40%,transparent)}
+.fv.feat{border-color:var(--neon-yellow);background:linear-gradient(135deg,color-mix(in srgb,var(--neon-yellow) 8%,transparent),color-mix(in srgb,var(--neon-pink) 5%,transparent));box-shadow:0 0 30px color-mix(in srgb,var(--neon-yellow) 30%,transparent)}
+.fv.feat::before{content:"★ "attr(data-feat-label);position:absolute;top:14px;right:-32px;background:var(--neon-yellow);color:#0a0014;font-family:var(--label);font-size:12px;letter-spacing:3px;padding:6px 36px;text-transform:uppercase;transform:rotate(40deg);box-shadow:0 0 20px color-mix(in srgb,var(--neon-yellow) 70%,transparent)}
+.fv .label{font-family:var(--label);font-size:11px;letter-spacing:3px;color:var(--neon-cyan);text-transform:uppercase}
+.fv h3{font-family:var(--display);font-size:48px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:var(--neon-pink);text-shadow:0 0 18px color-mix(in srgb,var(--neon-pink) 60%,transparent)}
+.fv.feat h3{color:var(--neon-yellow);text-shadow:0 0 18px color-mix(in srgb,var(--neon-yellow) 70%,transparent)}
+.fv .price{font-family:var(--price);font-size:48px;letter-spacing:0;line-height:.9;color:#fff}
+.fv .price small{display:block;font-family:var(--body);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,.5);margin-top:6px}
+.fv ul{list-style:none;padding-top:14px;border-top:1px dashed rgba(255,255,255,.15);display:flex;flex-direction:column;gap:8px}
+.fv li{font-family:var(--body);font-size:14px;color:rgba(255,255,255,.75);display:flex;gap:10px;align-items:flex-start}
+.fv li::before{content:"◆";color:var(--neon-cyan);font-size:10px;margin-top:5px}
+.fv.feat li::before{color:var(--neon-yellow)}
+.fv .btn-neon{align-self:stretch;justify-content:center;margin-top:auto}
+
+/* CTA */
+.cta-vegas{padding:120px 32px;text-align:center;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--neon-purple) 18%,transparent),transparent 70%);border-top:1px solid color-mix(in srgb,var(--neon-pink) 30%,transparent);position:relative}
+.cta-vegas::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 20px,color-mix(in srgb,var(--neon-pink) 4%,transparent) 20px 21px);pointer-events:none}
+.cta-vegas h2{font-family:var(--display);font-size:120px;line-height:.95;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 0 30px color-mix(in srgb,var(--neon-pink) 60%,transparent),0 0 60px color-mix(in srgb,var(--neon-cyan) 40%,transparent);margin-bottom:24px;position:relative}
+.cta-vegas h2 .y{color:var(--neon-yellow);text-shadow:0 0 30px color-mix(in srgb,var(--neon-yellow) 80%,transparent)}
+.cta-vegas p{font-family:var(--body);font-size:18px;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 32px;line-height:1.55;position:relative}
+.cta-vegas .row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+
+.foot{padding:24px 28px;display:flex;justify-content:space-between;font-family:var(--label);font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.4);border-top:1px solid color-mix(in srgb,var(--neon-pink) 20%,transparent);text-transform:uppercase}
+
+@media (max-width:900px){
+  .hero h1{font-size:64px !important}
+  .slot,.forfaits-v{grid-template-columns:1fr}
+  .pull-vegas blockquote{font-size:42px}
+  .cta-vegas h2,.sec-h h2{font-size:48px}
+}
+
+#tweaks-mount{position:fixed;inset:auto 0 0 auto;z-index:9999}
+</style></head>
+<body data-presta-page="evg">
+
+<header class="bar">
+  <a href="Homepage.html" class="logo">◆ ANIMACTION33</a>
+  <div class="right">
+    <a href="Homepage.html#prestations">Prestations</a>
+    <a href="Mariages.html">Mariages</a>
+    <a href="TeamBuilding.html">Team</a>
+    <a href="Contact.html" class="btn-neon" style="padding:6px 14px">Contact ►</a>
+  </div>
+</header>
+
+<section class="hero" id="hero" data-stamp="1" data-stamp-text="OPEN 24/7">
+  <span class="tag-live" id="tag-live"><span class="dot"></span><span data-edit="tagText">NIGHT MODE · ON</span></span>
+  <h1 id="h1" class="flicker"><span data-edit="t1">EVG</span> <span class="alt" data-edit="tx">×</span> <span data-edit="t2">EVF</span></h1>
+  <div class="sub" data-edit="sub">// La nuit qu'ils raconteront pendant 10 ans</div>
+  <p data-edit="lede">Briefés par les témoins · scénarisés par nous · joués sans filet de 6 à 12 heures. Vegas vibes, gestion adulte.</p>
+  <div class="cta">
+    <a href="Contact.html" class="btn-neon" data-edit="cta1">⚡ Briefer un témoin</a>
+    <a href="#defis" class="btn-neon cyan" data-edit="cta2">Voir les défis ►</a>
+  </div>
+</section>
+
+<div class="stats-strip" id="strip"><div class="strip-track" id="strip-track"></div></div>
+
+<section class="sec" id="sec-defis">
+  <div class="sec-h">
+    <span class="label" data-edit="defisKicker">// CATALOGUE</span>
+    <h2><span data-edit="defisTitle">Huit défis qui font des légendes.</span></h2>
+    <p data-edit="defisLede">Choisissez 2 à 4 défis par session. Chaque scénario est réécrit avec les témoins.</p>
+  </div>
+  <div class="slot" id="slot"></div>
+</section>
+
+<section class="pull-vegas" id="sec-pull">
+  <blockquote id="quote">« On crée des souvenirs <em>épiques</em>,<br/>jamais des regrets. »</blockquote>
+  <cite data-edit="quoteCite">// Notre règle d'or, signée et tamponnée</cite>
+</section>
+
+<section class="sec" id="sec-forfaits">
+  <div class="sec-h">
+    <span class="label" data-edit="forfaitsKicker">// FORMULES</span>
+    <h2><span data-edit="forfaitsTitle">Trois jackpots au choix.</span></h2>
+  </div>
+  <div class="forfaits-v" id="forfaits"></div>
+</section>
+
+<section class="cta-vegas" id="sec-cta">
+  <h2 id="ctaH2">READY <span class="y">player</span> 1 ?</h2>
+  <p data-edit="ctaLede">30 minutes de visio offertes pour calibrer le ton, les interdits et l'intensité avec les témoins. Le reste suit.</p>
+  <div class="row">
+    <a href="Contact.html" class="btn-neon" data-edit="ctaBtn1">⚡ Briefer maintenant</a>
+    <a href="tel:0677243675" class="btn-neon cyan" data-edit="ctaBtn2">📞 06 77 24 36 75</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <span data-edit="footL">© 2026 · ANIMACTION33 · LIBOURNE</span>
+  <span data-edit="footR">06 77 24 36 75 · CONTACT@ANIMACTION33.FR</span>
+</footer>
+
+<div id="tweaks-mount"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "preset": "vegas",
+  "bg": "#0a0014",
+  "neonPink": "#FF2EC4",
+  "neonCyan": "#00F0FF",
+  "neonYellow": "#FFE600",
+  "neonPurple": "#A855F7",
+  "neonGreen": "#39FF14",
+  "displayFont": "Monoton",
+  "labelFont": "Audiowide",
+  "bodyFont": "Space Grotesk",
+  "priceFont": "Bungee",
+  "h1Size": 140,
+  "h2Size": 80,
+  "ctaSize": 120,
+  "secPad": 80,
+  "radius": 14,
+  "glow": 1,
+  "scanlines": 1,
+  "grain": false,
+  "flicker": true,
+  "stripSpeed": 30,
+  "showTag": true,
+  "tagText": "NIGHT MODE · ON",
+  "stampText": "OPEN 24/7",
+  "showStamp": true,
+  "h1Word1": "EVG",
+  "h1Sep": "×",
+  "h1Word2": "EVF",
+  "sub": "// La nuit qu'ils raconteront pendant 10 ans",
+  "lede": "Briefés par les témoins · scénarisés par nous · joués sans filet de 6 à 12 heures. Vegas vibes, gestion adulte.",
+  "cta1": "⚡ Briefer un témoin",
+  "cta2": "Voir les défis ►",
+  "showDefis": true,
+  "defisCols": 4,
+  "defisKicker": "// CATALOGUE",
+  "defisTitle": "Huit défis qui font des légendes.",
+  "defisLede": "Choisissez 2 à 4 défis par session. Chaque scénario est réécrit avec les témoins.",
+  "showPull": true,
+  "quoteText": "On crée des souvenirs",
+  "quoteEm": "épiques",
+  "quoteEnd": "jamais des regrets.",
+  "quoteCite": "// Notre règle d'or, signée et tamponnée",
+  "showForfaits": true,
+  "forfaitsKicker": "// FORMULES",
+  "forfaitsTitle": "Trois jackpots au choix.",
+  "priceA": 249,
+  "priceB": 449,
+  "priceC": "SUR DEVIS",
+  "featLabel": "JACKPOT",
+  "ctaH2pre": "READY",
+  "ctaH2yellow": "player",
+  "ctaH2post": "1 ?",
+  "ctaLede": "30 minutes de visio offertes pour calibrer le ton, les interdits et l'intensité avec les témoins. Le reste suit.",
+  "ctaBtn1": "⚡ Briefer maintenant",
+  "ctaBtn2": "📞 06 77 24 36 75"
+}/*EDITMODE-END*/;
+
+const PRESETS = {
+  vegas:    {bg:"#0a0014",neonPink:"#FF2EC4",neonCyan:"#00F0FF",neonYellow:"#FFE600",neonPurple:"#A855F7",neonGreen:"#39FF14",displayFont:"Monoton",labelFont:"Audiowide",priceFont:"Bungee"},
+  miami:    {bg:"#0d0220",neonPink:"#FF6EC7",neonCyan:"#3DFFC4",neonYellow:"#FFD93D",neonPurple:"#FF6EC7",neonGreen:"#3DFFC4",displayFont:"Bungee Shade",labelFont:"Audiowide",priceFont:"Bungee"},
+  tokyo:    {bg:"#08000f",neonPink:"#FF1493",neonCyan:"#00FFFF",neonYellow:"#FFFF00",neonPurple:"#9D4EDD",neonGreen:"#00FF88",displayFont:"Rubik Mono One",labelFont:"VT323",priceFont:"Bungee"},
+  arcade:   {bg:"#000000",neonPink:"#FF00AA",neonCyan:"#00E5FF",neonYellow:"#FFEA00",neonPurple:"#7C00FF",neonGreen:"#00FF00",displayFont:"Press Start 2P",labelFont:"VT323",priceFont:"VT323"},
+  acid:     {bg:"#0a0a00",neonPink:"#FF00FF",neonCyan:"#00FF00",neonYellow:"#FFFF00",neonPurple:"#FF00FF",neonGreen:"#00FF00",displayFont:"Bungee Inline",labelFont:"Audiowide",priceFont:"Bungee"},
+  midnight: {bg:"#000814",neonPink:"#E63946",neonCyan:"#48CAE4",neonYellow:"#FFB703",neonPurple:"#7B2CBF",neonGreen:"#80ED99",displayFont:"Major Mono Display",labelFont:"JetBrains Mono",priceFont:"Bungee"},
+};
+
+const DEFIS_DEFAULTS = [
+  {n:"01",t:"Olympiades déjantées",d:"Tir à l'arc à ventouses, sumos gonflables, courses en sac.",tag:"OUTDOOR",dur:"3H"},
+  {n:"02",t:"Murder party",d:"Le/la futur·e enquête. Ou est suspect·e. Ça dépend.",tag:"INDOOR",dur:"2H"},
+  {n:"03",t:"Chasse au trésor",d:"Énigmes, défis aux passants, photos imposées en ville.",tag:"URBAIN",dur:"4H"},
+  {n:"04",t:"Koh-Lanta adultes",d:"Force, équilibre, conseil avec bâton de la honte.",tag:"FORÊT",dur:"5H"},
+  {n:"05",t:"Blind test karaoké",d:"5 manches thématiques, gages corsés, light show pro.",tag:"SOIRÉE",dur:"3H"},
+  {n:"06",t:"Escape XXL",d:"Salle louée pour vous · scénario aux mesures.",tag:"SUR SITE",dur:"1H30"},
+  {n:"07",t:"Quiz perso",d:"Construit avec les témoins. Sur-mesure pur.",tag:"REPAS",dur:"2H"},
+  {n:"08",t:"La cérémonie",d:"Vœux loufoques, diplôme, cape, couronne. Cinéma.",tag:"FINAL",dur:"30M"},
+];
+
+const STRIP_DEFAULTS = [
+  "120+ EVG ANIMÉS","30+ DÉFIS CATALOGUÉS","0% MAUVAISE SURPRISE","100% LÉGAL","DEVIS · 48H"
+];
+
+function App(){
+  const [t,setT] = useTweaks(TWEAK_DEFAULTS);
+  const [defis,setDefis] = React.useState(DEFIS_DEFAULTS);
+  const [strip,setStrip] = React.useState(STRIP_DEFAULTS.join(" · "));
+
+  // Apply CSS vars + body classes
+  React.useEffect(()=>{
+    const r = document.documentElement.style;
+    r.setProperty("--bg",t.bg);
+    r.setProperty("--neon-pink",t.neonPink);
+    r.setProperty("--neon-cyan",t.neonCyan);
+    r.setProperty("--neon-yellow",t.neonYellow);
+    r.setProperty("--neon-purple",t.neonPurple);
+    r.setProperty("--neon-green",t.neonGreen);
+    r.setProperty("--display",`"${t.displayFont}"`);
+    r.setProperty("--label",`"${t.labelFont}"`);
+    r.setProperty("--body",`"${t.bodyFont}"`);
+    r.setProperty("--price",`"${t.priceFont}"`);
+    r.setProperty("--h1",t.h1Size+"px");
+    r.setProperty("--pad-sec",t.secPad+"px");
+    r.setProperty("--radius",t.radius+"px");
+    r.setProperty("--glow",t.glow);
+    r.setProperty("--scan",t.scanlines);
+    r.setProperty("--strip-speed",t.stripSpeed+"s");
+    r.setProperty("--cols-defis",t.defisCols);
+    document.body.classList.toggle("grain",!!t.grain);
+    document.querySelectorAll(".sec-h h2").forEach(el=>el.style.fontSize=t.h2Size+"px");
+    const ctaH2 = document.getElementById("ctaH2"); if(ctaH2) ctaH2.style.fontSize=t.ctaSize+"px";
+    const h1 = document.getElementById("h1"); if(h1) h1.classList.toggle("flicker",!!t.flicker);
+    const hero = document.getElementById("hero");
+    hero.dataset.stamp = t.showStamp ? "1" : "0";
+    hero.dataset.stampText = t.stampText;
+    document.getElementById("tag-live").style.display = t.showTag?"":"none";
+    document.getElementById("sec-defis").style.display = t.showDefis?"":"none";
+    document.getElementById("sec-pull").style.display = t.showPull?"":"none";
+    document.getElementById("sec-forfaits").style.display = t.showForfaits?"":"none";
+  },[t]);
+
+  // Render dynamic content
+  React.useEffect(()=>{
+    document.querySelector('[data-edit="tagText"]').textContent = t.tagText;
+    document.querySelector('[data-edit="t1"]').textContent = t.h1Word1;
+    document.querySelector('[data-edit="tx"]').textContent = t.h1Sep;
+    document.querySelector('[data-edit="t2"]').textContent = t.h1Word2;
+    document.querySelector('[data-edit="sub"]').textContent = t.sub;
+    document.querySelector('[data-edit="lede"]').textContent = t.lede;
+    document.querySelector('[data-edit="cta1"]').textContent = t.cta1;
+    document.querySelector('[data-edit="cta2"]').textContent = t.cta2;
+    document.querySelector('[data-edit="defisKicker"]').textContent = t.defisKicker;
+    document.querySelector('[data-edit="defisTitle"]').textContent = t.defisTitle;
+    document.querySelector('[data-edit="defisLede"]').textContent = t.defisLede;
+    document.querySelector('[data-edit="forfaitsKicker"]').textContent = t.forfaitsKicker;
+    document.querySelector('[data-edit="forfaitsTitle"]').textContent = t.forfaitsTitle;
+    document.querySelector('[data-edit="quoteCite"]').textContent = t.quoteCite;
+    document.querySelector('[data-edit="ctaLede"]').textContent = t.ctaLede;
+    document.querySelector('[data-edit="ctaBtn1"]').textContent = t.ctaBtn1;
+    document.querySelector('[data-edit="ctaBtn2"]').textContent = t.ctaBtn2;
+    document.querySelector('[data-edit="footL"]').textContent = "© 2026 · ANIMACTION33 · LIBOURNE";
+    document.querySelector('[data-edit="footR"]').textContent = "06 77 24 36 75 · CONTACT@ANIMACTION33.FR";
+    document.getElementById("quote").innerHTML = `« ${t.quoteText} <em>${t.quoteEm}</em>,<br/>${t.quoteEnd} »`;
+    document.getElementById("ctaH2").innerHTML = `${t.ctaH2pre} <span class="y">${t.ctaH2yellow}</span> ${t.ctaH2post}`;
+  },[t]);
+
+  // Render defis cards
+  React.useEffect(()=>{
+    const slot = document.getElementById("slot");
+    slot.innerHTML = defis.map(d=>`
+      <article class="slot-card">
+        <div class="num">${d.n}</div>
+        <h3>${d.t}</h3>
+        <p>${d.d}</p>
+        <div class="meta"><span>${d.tag}</span><span class="badge">${d.dur}</span></div>
+      </article>`).join("");
+  },[defis]);
+
+  // Render forfaits
+  React.useEffect(()=>{
+    const f = document.getElementById("forfaits");
+    f.innerHTML = `
+      <div class="fv">
+        <span class="label">// FORMULE A</span>
+        <h3>Après-midi</h3>
+        <div class="price">${t.priceA}€<small>3H · 2 défis · 8–15 pers.</small></div>
+        <ul>
+          <li>2 défis combinés</li>
+          <li>Briefing témoins · scénario léger</li>
+          <li>Sono portative</li>
+          <li>Accessoires + gages + cadeaux</li>
+          <li>Animateur 3h</li>
+        </ul>
+        <a href="Contact.html" class="btn-neon cyan">Réserver</a>
+      </div>
+      <div class="fv feat" data-feat-label="${t.featLabel}">
+        <span class="label">// FORMULE B</span>
+        <h3>Journée</h3>
+        <div class="price">${t.priceB}€<small>6H · 4 défis · jusqu'à 25 pers.</small></div>
+        <ul>
+          <li>4 défis enchaînés · scénario complet</li>
+          <li>2 RDV de prépa avec témoins</li>
+          <li>Cérémonie de remise du diplôme</li>
+          <li>Photographe souvenir · 2h</li>
+          <li>Costumes · accessoires · cadeau perso</li>
+          <li>Animateur 6h</li>
+        </ul>
+        <a href="Contact.html" class="btn-neon">Tirer le ${t.featLabel.toLowerCase()} ►</a>
+      </div>
+      <div class="fv">
+        <span class="label">// FORMULE C</span>
+        <h3>Week-end</h3>
+        <div class="price">${t.priceC}<small>2 jours · sur-mesure</small></div>
+        <ul>
+          <li>Scénario écrit pour vous</li>
+          <li>6 à 8 défis sur 2 jours</li>
+          <li>Coordination logement / resto / activités</li>
+          <li>Photographe + vidéo souvenir</li>
+          <li>2 animateurs · matériel pro</li>
+        </ul>
+        <a href="Contact.html" class="btn-neon pink">Demander un devis</a>
+      </div>`;
+  },[t.priceA,t.priceB,t.priceC,t.featLabel]);
+
+  // Render strip
+  React.useEffect(()=>{
+    const items = strip.split("·").map(s=>s.trim()).filter(Boolean);
+    const html = items.map((it,i)=>`<span class="${i%2?'alt':''}">${it}</span><span class="div">◆</span>`).join("");
+    document.getElementById("strip-track").innerHTML = html + html;
+  },[strip]);
+
+  function applyPreset(name){
+    const p = PRESETS[name]; if(!p) return;
+    setT("preset",name);
+    Object.entries(p).forEach(([k,v])=>setT(k,v));
+  }
+
+  function updateDefi(idx,field,val){
+    setDefis(d=>d.map((x,i)=>i===idx?{...x,[field]:val}:x));
+  }
+
+  return (
+    <TweaksPanel title="Tweaks · Vegas">
+      <TweakSection label="Preset" />
+      <TweakSelect label="Theme" value={t.preset} options={Object.keys(PRESETS)} onChange={applyPreset}/>
+
+      <TweakSection label="Couleurs" />
+      <TweakColor label="Fond" value={t.bg} onChange={v=>setT("bg",v)}/>
+      <TweakColor label="Néon rose" value={t.neonPink} onChange={v=>setT("neonPink",v)}/>
+      <TweakColor label="Néon cyan" value={t.neonCyan} onChange={v=>setT("neonCyan",v)}/>
+      <TweakColor label="Néon jaune" value={t.neonYellow} onChange={v=>setT("neonYellow",v)}/>
+      <TweakColor label="Néon violet" value={t.neonPurple} onChange={v=>setT("neonPurple",v)}/>
+      <TweakColor label="Néon vert" value={t.neonGreen} onChange={v=>setT("neonGreen",v)}/>
+
+      <TweakSection label="Typographie" />
+      <TweakSelect label="Display" value={t.displayFont} options={["Monoton","Bungee","Bungee Shade","Bungee Inline","Rubik Mono One","Press Start 2P","Major Mono Display","Audiowide"]} onChange={v=>setT("displayFont",v)}/>
+      <TweakSelect label="Label" value={t.labelFont} options={["Audiowide","Bungee","VT323","JetBrains Mono","Press Start 2P","Space Grotesk"]} onChange={v=>setT("labelFont",v)}/>
+      <TweakSelect label="Body" value={t.bodyFont} options={["Space Grotesk","Inter","JetBrains Mono","VT323"]} onChange={v=>setT("bodyFont",v)}/>
+      <TweakSelect label="Prix" value={t.priceFont} options={["Bungee","Bungee Shade","VT323","Audiowide","Monoton"]} onChange={v=>setT("priceFont",v)}/>
+      <TweakSlider label="Taille H1" value={t.h1Size} min={60} max={240} unit="px" onChange={v=>setT("h1Size",v)}/>
+      <TweakSlider label="Taille H2" value={t.h2Size} min={40} max={140} unit="px" onChange={v=>setT("h2Size",v)}/>
+      <TweakSlider label="Taille CTA" value={t.ctaSize} min={50} max={200} unit="px" onChange={v=>setT("ctaSize",v)}/>
+
+      <TweakSection label="Effets" />
+      <TweakSlider label="Glow" value={t.glow} min={0} max={2} step={0.05} onChange={v=>setT("glow",v)}/>
+      <TweakSlider label="Scanlines" value={t.scanlines} min={0} max={1} step={0.05} onChange={v=>setT("scanlines",v)}/>
+      <TweakToggle label="Grain CRT" value={t.grain} onChange={v=>setT("grain",v)}/>
+      <TweakToggle label="Flicker H1" value={t.flicker} onChange={v=>setT("flicker",v)}/>
+      <TweakSlider label="Vitesse marquee" value={t.stripSpeed} min={5} max={120} unit="s" onChange={v=>setT("stripSpeed",v)}/>
+
+      <TweakSection label="Layout" />
+      <TweakSlider label="Padding section" value={t.secPad} min={20} max={200} unit="px" onChange={v=>setT("secPad",v)}/>
+      <TweakSlider label="Border radius" value={t.radius} min={0} max={40} unit="px" onChange={v=>setT("radius",v)}/>
+      <TweakRadio label="Colonnes défis" value={String(t.defisCols)} options={["2","3","4"]} onChange={v=>setT("defisCols",Number(v))}/>
+
+      <TweakSection label="Sections" />
+      <TweakToggle label="Tag live" value={t.showTag} onChange={v=>setT("showTag",v)}/>
+      <TweakToggle label="Stamp arrière" value={t.showStamp} onChange={v=>setT("showStamp",v)}/>
+      <TweakToggle label="Section défis" value={t.showDefis} onChange={v=>setT("showDefis",v)}/>
+      <TweakToggle label="Citation" value={t.showPull} onChange={v=>setT("showPull",v)}/>
+      <TweakToggle label="Forfaits" value={t.showForfaits} onChange={v=>setT("showForfaits",v)}/>
+
+      <TweakSection label="Hero — copy" />
+      <TweakText label="Tag" value={t.tagText} onChange={v=>setT("tagText",v)}/>
+      <TweakText label="Stamp" value={t.stampText} onChange={v=>setT("stampText",v)}/>
+      <TweakText label="H1 mot 1" value={t.h1Word1} onChange={v=>setT("h1Word1",v)}/>
+      <TweakText label="Séparateur" value={t.h1Sep} onChange={v=>setT("h1Sep",v)}/>
+      <TweakText label="H1 mot 2" value={t.h1Word2} onChange={v=>setT("h1Word2",v)}/>
+      <TweakText label="Sous-titre" value={t.sub} onChange={v=>setT("sub",v)}/>
+      <TweakText label="Lede" value={t.lede} onChange={v=>setT("lede",v)}/>
+      <TweakText label="CTA 1" value={t.cta1} onChange={v=>setT("cta1",v)}/>
+      <TweakText label="CTA 2" value={t.cta2} onChange={v=>setT("cta2",v)}/>
+
+      <TweakSection label="Marquee" />
+      <TweakText label="Items (· séparé)" value={strip} onChange={setStrip}/>
+
+      <TweakSection label="Défis — copy" />
+      <TweakText label="Kicker" value={t.defisKicker} onChange={v=>setT("defisKicker",v)}/>
+      <TweakText label="Titre" value={t.defisTitle} onChange={v=>setT("defisTitle",v)}/>
+      <TweakText label="Lede" value={t.defisLede} onChange={v=>setT("defisLede",v)}/>
+      {defis.map((d,i)=>(
+        <React.Fragment key={i}>
+          <TweakText label={`#${d.n} titre`} value={d.t} onChange={v=>updateDefi(i,"t",v)}/>
+          <TweakText label={`#${d.n} desc`} value={d.d} onChange={v=>updateDefi(i,"d",v)}/>
+          <TweakText label={`#${d.n} tag`} value={d.tag} onChange={v=>updateDefi(i,"tag",v)}/>
+          <TweakText label={`#${d.n} durée`} value={d.dur} onChange={v=>updateDefi(i,"dur",v)}/>
+        </React.Fragment>
+      ))}
+
+      <TweakSection label="Citation" />
+      <TweakText label="Début" value={t.quoteText} onChange={v=>setT("quoteText",v)}/>
+      <TweakText label="Mot jaune" value={t.quoteEm} onChange={v=>setT("quoteEm",v)}/>
+      <TweakText label="Fin" value={t.quoteEnd} onChange={v=>setT("quoteEnd",v)}/>
+      <TweakText label="Signature" value={t.quoteCite} onChange={v=>setT("quoteCite",v)}/>
+
+      <TweakSection label="Forfaits" />
+      <TweakText label="Kicker" value={t.forfaitsKicker} onChange={v=>setT("forfaitsKicker",v)}/>
+      <TweakText label="Titre" value={t.forfaitsTitle} onChange={v=>setT("forfaitsTitle",v)}/>
+      <TweakNumber label="Prix A (€)" value={t.priceA} onChange={v=>setT("priceA",v)}/>
+      <TweakNumber label="Prix B (€)" value={t.priceB} onChange={v=>setT("priceB",v)}/>
+      <TweakText label="Prix C" value={t.priceC} onChange={v=>setT("priceC",v)}/>
+      <TweakText label="Badge feat" value={t.featLabel} onChange={v=>setT("featLabel",v)}/>
+
+      <TweakSection label="CTA final" />
+      <TweakText label="Pré" value={t.ctaH2pre} onChange={v=>setT("ctaH2pre",v)}/>
+      <TweakText label="Mot jaune" value={t.ctaH2yellow} onChange={v=>setT("ctaH2yellow",v)}/>
+      <TweakText label="Post" value={t.ctaH2post} onChange={v=>setT("ctaH2post",v)}/>
+      <TweakText label="Lede" value={t.ctaLede} onChange={v=>setT("ctaLede",v)}/>
+      <TweakText label="Bouton 1" value={t.ctaBtn1} onChange={v=>setT("ctaBtn1",v)}/>
+      <TweakText label="Bouton 2" value={t.ctaBtn2} onChange={v=>setT("ctaBtn2",v)}/>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("tweaks-mount")).render(<App/>);
+</script>
+<script src="presta-flags.js"></script>
+</body></html>
