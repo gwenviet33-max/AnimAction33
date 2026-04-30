@@ -14,6 +14,7 @@ const NAV = [
   { href: '/admin/bandeau', label: '📣 Bandeau' },
   { href: '/admin/temoignages', label: '💬 Témoignages' },
   { href: '/admin/galerie', label: '🖼️ Galerie' },
+  { href: '/admin/coupons', label: '🎁 Bons de réduction' },
   { href: '/admin/prestations', label: '🎯 Prestations' },
   { href: '/admin/stats', label: '📊 Stats & chiffres' },
   { href: '/admin/parametres', label: '⚙️ Paramètres' },

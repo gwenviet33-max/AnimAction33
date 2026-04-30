@@ -3,15 +3,24 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  if (!pathname.startsWith('/admin')) return NextResponse.next()
-  if (pathname === '/admin/login' || pathname.startsWith('/api/admin/login')) {
+
+  if (!pathname.startsWith('/admin')) {
     return NextResponse.next()
   }
+  if (pathname === '/admin/login') {
+    return NextResponse.next()
+  }
+
   const session = request.cookies.get('aa_admin_session')
   if (!session || session.value !== 'authenticated') {
-    return NextResponse.redirect(new URL('/admin/login', request.url))
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/login'
+    return NextResponse.redirect(url)
   }
+
   return NextResponse.next()
 }
 
-export const config = { matcher: ['/admin/:path*'] }
+export const config = {
+  matcher: ['/admin/:path*'],
+}

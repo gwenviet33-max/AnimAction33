@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -29,6 +29,7 @@ const Schema = z.object({
     .regex(/^[0-9 +()\-]+$/, 'Téléphone invalide'),
   email: z.string().email('Email invalide'),
   message: z.string().optional(),
+  code: z.string().optional(),
   rgpd: z.literal(true, { errorMap: () => ({ message: 'Consentement requis' }) }),
 })
 
@@ -40,6 +41,10 @@ export function ContactForm() {
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
+  const [codeStatus, setCodeStatus] = useState<{ state: 'idle' | 'checking' | 'valid' | 'invalid'; reason?: string }>(
+    { state: 'idle' }
+  )
+  const [couponStatus, setCouponStatus] = useState<'valid' | 'invalid' | 'none'>('none')
 
   const {
     register,
@@ -54,6 +59,41 @@ export function ContactForm() {
   })
 
   const type = watch('type')
+  const code = watch('code')
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const url = new URL(window.location.href)
+    const fromUrl = url.searchParams.get('code')
+    if (fromUrl) setValue('code', fromUrl)
+  }, [setValue])
+
+  useEffect(() => {
+    const trimmed = (code || '').trim()
+    if (!trimmed) {
+      setCodeStatus({ state: 'idle' })
+      return
+    }
+    setCodeStatus({ state: 'checking' })
+    const controller = new AbortController()
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/coupons/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: trimmed }),
+          signal: controller.signal,
+        })
+        const json = await res.json()
+        if (json.valid) setCodeStatus({ state: 'valid' })
+        else setCodeStatus({ state: 'invalid', reason: json.reason })
+      } catch {}
+    }, 400)
+    return () => {
+      clearTimeout(t)
+      controller.abort()
+    }
+  }, [code])
 
   const next = async () => {
     let ok = true
@@ -71,10 +111,11 @@ export function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
+      const j = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const j = await res.json().catch(() => ({}))
         throw new Error(j.error || 'Erreur serveur')
       }
+      setCouponStatus(j.couponStatus || 'none')
       setSubmitted(true)
       fireConfetti(window.innerWidth / 2, window.innerHeight / 3, 120)
     } catch (e: any) {
@@ -90,6 +131,16 @@ export function ContactForm() {
         <p className="mt-3 text-aa-ink/80">
           On revient vers vous sous 48h avec un devis détaillé. Merci !
         </p>
+        {couponStatus === 'valid' && (
+          <p className="mt-4 inline-block rounded-full border-[3px] border-aa-ink bg-aa-blue px-4 py-1.5 font-bold text-white">
+            🎁 Code validé · -15€ dès 200€
+          </p>
+        )}
+        {couponStatus === 'invalid' && (
+          <p className="mt-4 inline-block rounded-full border-[3px] border-aa-ink bg-white px-4 py-1.5 text-sm text-aa-ink/70">
+            Code non valide ou déjà utilisé — pas d'inquiétude, on traite votre demande quand même.
+          </p>
+        )}
       </div>
     )
   }
@@ -173,6 +224,39 @@ export function ContactForm() {
                 className="mt-1 w-full rounded-md border-2 border-aa-ink bg-white p-3"
                 {...register('budget')}
               />
+            </label>
+            <label className="col-span-full block">
+              <span className="text-sm font-bold">
+                🎁 Code promo (optionnel — gagné via le mini-jeu)
+              </span>
+              <input
+                type="text"
+                placeholder="ANIM-XXXX-XXXX"
+                className={
+                  'mt-1 w-full rounded-md border-2 bg-white p-3 font-mono uppercase tracking-widest ' +
+                  (codeStatus.state === 'valid'
+                    ? 'border-emerald-600'
+                    : codeStatus.state === 'invalid'
+                      ? 'border-aa-red'
+                      : 'border-aa-ink')
+                }
+                {...register('code')}
+              />
+              {codeStatus.state === 'checking' && (
+                <p className="mt-1 text-xs text-aa-ink/60">Vérification…</p>
+              )}
+              {codeStatus.state === 'valid' && (
+                <p className="mt-1 text-xs font-bold text-emerald-700">
+                  ✓ Code valide — 15€ de réduction dès 200€ d'achat.
+                </p>
+              )}
+              {codeStatus.state === 'invalid' && (
+                <p className="mt-1 text-xs text-aa-red">
+                  {codeStatus.reason === 'already_used'
+                    ? 'Ce code a déjà été utilisé.'
+                    : 'Code introuvable.'}
+                </p>
+              )}
             </label>
           </div>
         </div>

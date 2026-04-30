@@ -33,3 +33,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime data (coupons)
+/.data
+
+# accidental build dirs (when distDir resolves to a non-/tmp path)
+/var
+/private
+
