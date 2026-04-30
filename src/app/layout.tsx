@@ -7,6 +7,8 @@ import { MobileStickyBar } from '@/components/layout/MobileStickyBar'
 import { SplashScreen } from '@/components/layout/SplashScreen'
 import { EasterEggs } from '@/components/layout/EasterEggs'
 import { Bandeau } from '@/components/layout/Bandeau'
+import { StoreHydrator } from '@/components/layout/StoreHydrator'
+import { getAllContent } from '@/lib/content-server'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://animaction33.netlify.app'
 
@@ -54,7 +56,8 @@ const localBusinessSchema = {
   priceRange: '€€',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const initialContent = await getAllContent()
   return (
     <html lang="fr">
       <head>
@@ -64,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <StoreHydrator initial={initialContent} />
         <SplashScreen />
         <EasterEggs />
         <Bandeau />

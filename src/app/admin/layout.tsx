@@ -18,6 +18,7 @@ const NAV = [
   { href: '/admin/prestations', label: '🎯 Prestations' },
   { href: '/admin/stats', label: '📊 Stats & chiffres' },
   { href: '/admin/parametres', label: '⚙️ Paramètres' },
+  { href: '/admin/migration', label: '🚚 Migration localStorage' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

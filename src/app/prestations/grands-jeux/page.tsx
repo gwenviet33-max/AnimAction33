@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Catalogue grands jeux — +30 animations sur mesure',
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 const CATS = ['Tous', 'Immersif', 'Aventure', 'Exploration', 'Show', 'Compétition', 'Stratégie', 'Adresse', 'Terrain', 'Classique', 'Action']
 
-export default function GrandsJeuxPage() {
-  const games = STORE_DEFAULTS.games
+export default async function GrandsJeuxPage() {
+  const games = await getContent('games')
 
   return (
     <>

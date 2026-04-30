@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Anniversaires enfants — animations Libourne dès 199€',
@@ -17,7 +17,8 @@ const serviceSchema = {
   offers: { '@type': 'Offer', price: '199', priceCurrency: 'EUR' },
 }
 
-export default function AnniversairesPage() {
+export default async function AnniversairesPage() {
+  const formules = await getContent('formules')
   return (
     <>
       <script
@@ -56,7 +57,7 @@ export default function AnniversairesPage() {
           { temps: 'H+1h45', titre: 'Goûter & cadeaux', desc: 'Pause goûter, remise des diplômes, photo de groupe.' },
           { temps: 'H+2h', titre: 'Retour des parents', desc: 'Enfants épuisés, parents ravis. Mission accomplie.' },
         ]}
-        formules={STORE_DEFAULTS.formules.anniversaires}
+        formules={formules.anniversaires}
         options={['Décoration thématique', 'Goûter inclus', 'Vidéo souvenir', 'Animateur n°2', 'Sono + micro', 'Costumes adultes']}
         bgHero="bg-aa-yellow"
       />

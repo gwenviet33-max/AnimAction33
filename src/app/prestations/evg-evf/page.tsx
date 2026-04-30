@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'EVG / EVF Bordeaux & Libourne — animations sur mesure',
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Enterrements de vie de garçon ou de jeune fille : Koh-Lanta adulte, défis fous, city game, scénarios immersifs. Animation pro à Libourne et en Gironde.",
 }
 
-export default function EvgEvfPage() {
+export default async function EvgEvfPage() {
+  const formules = await getContent('formules')
   return (
     <PrestationPage
       emoji="🥂"
@@ -42,7 +43,7 @@ export default function EvgEvfPage() {
         { temps: 'H+2h', titre: 'Scénario immersif', desc: 'Pic de l\'expérience : grand jeu signature.' },
         { temps: 'Fin', titre: 'Diplôme + photo', desc: 'Remise du "diplôme de futur(e) marié(e)", photo souvenir.' },
       ]}
-      formules={STORE_DEFAULTS.formules.evg}
+      formules={formules.evg}
       options={['Costumes / déguisements', 'Vidéaste', 'Repas inclus', 'Hébergement (sur devis)', 'Transport groupe', 'Surprise personnalisée']}
       bgHero="bg-aa-cream"
       ctaColor="red"

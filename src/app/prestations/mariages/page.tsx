@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Animations mariage Gironde — vin d\'honneur, soirée, journée',
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Animation mariage à Libourne et en Gironde : vin d'honneur, soirée complète, blind test, karaoké, animation enfants. Devis sous 48h.",
 }
 
-export default function MariagesPage() {
+export default async function MariagesPage() {
+  const formules = await getContent('formules')
   return (
     <PrestationPage
       emoji="💍"
@@ -42,7 +43,7 @@ export default function MariagesPage() {
         { temps: 'Soirée', titre: 'Le feu', desc: 'Blind test, karaoké, animations lancées au bon moment.' },
         { temps: 'Fin', titre: 'Cérémonie minuit', desc: 'Surprise des mariés ou fin en beauté.' },
       ]}
-      formules={STORE_DEFAULTS.formules.mariages}
+      formules={formules.mariages}
       options={['Animation enfants 2h', 'Photobooth', 'DJ partenaire', 'Cérémonie minuit', 'Surprise vidéo', 'Décoration']}
       bgHero="bg-aa-cream"
       ctaColor="red"

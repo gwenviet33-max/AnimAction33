@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Team Building Gironde — olympiades, escape, grands jeux',
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Animation team building entreprises : olympiades, escape game, grands jeux. 20 à 100 collaborateurs. Facture entreprise, RC Pro.",
 }
 
-export default function TeamBuildingPage() {
+export default async function TeamBuildingPage() {
+  const formules = await getContent('formules')
   return (
     <PrestationPage
       emoji="🏢"
@@ -42,7 +43,7 @@ export default function TeamBuildingPage() {
         { temps: 'Midi', titre: 'Pause optimisée', desc: 'Format pause café ou déjeuner libre selon votre cadre.' },
         { temps: 'Après-midi', titre: 'Grand jeu final', desc: 'Olympiades / escape — un seul gagnant, des souvenirs partagés.' },
       ]}
-      formules={STORE_DEFAULTS.formules.teamBuilding}
+      formules={formules.teamBuilding}
       options={['Vidéo souvenir', 'Photographe', 'Trophée gravé', 'T-shirts personnalisés', 'Restauration', 'Salle privatisée']}
       bgHero="bg-aa-cream"
       ctaColor="blue"

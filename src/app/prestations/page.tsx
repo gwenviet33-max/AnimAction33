@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { STORE_DEFAULTS } from '@/lib/defaults'
+import { getContent } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Prestations',
@@ -10,8 +10,9 @@ export const metadata: Metadata = {
 const PALETTE = ['#FFFDF6', '#E8EFFC', '#FDE3E4', '#FFC91F', '#1C5FD8', '#DAF0DE']
 const TEXT_LIGHT = [false, false, false, false, true, false]
 
-export default function PrestationsIndex() {
-  const prestations = STORE_DEFAULTS.prestations
+export default async function PrestationsIndex() {
+  const allPrestations = await getContent('prestations')
+  const prestations = allPrestations.filter((p) => p.active)
 
   return (
     <>
