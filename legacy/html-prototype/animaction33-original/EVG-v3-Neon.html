@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>EVG / EVF — Neon Vegas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Audiowide&family=Bungee&family=Bungee+Shade&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0014;--bg2:#1a0033;--neon-pink:#FF2EC4;--neon-cyan:#00F0FF;--neon-yellow:#FFE600;--neon-purple:#A855F7;--neon-green:#39FF14}
+body{background:var(--bg);color:#fff;font-family:"Space Grotesk",sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;
+  background:
+    radial-gradient(800px 500px at 20% 20%,rgba(255,46,196,.25),transparent 60%),
+    radial-gradient(700px 600px at 80% 70%,rgba(0,240,255,.18),transparent 55%),
+    radial-gradient(500px 400px at 50% 50%,rgba(168,85,247,.15),transparent 60%);pointer-events:none;z-index:0}
+body::after{content:"";position:fixed;inset:0;background:
+  repeating-linear-gradient(0deg,transparent 0 2px,rgba(255,255,255,.02) 2px 3px);pointer-events:none;z-index:1}
+body>*{position:relative;z-index:2}
+a{color:inherit;text-decoration:none}
+
+.bar{padding:14px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,46,196,.3);background:rgba(10,0,20,.6);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10}
+.bar .logo{font-family:"Audiowide";font-size:20px;letter-spacing:.04em;color:var(--neon-pink);text-shadow:0 0 16px rgba(255,46,196,.7)}
+.bar .right{display:flex;gap:18px;font-family:"Space Grotesk";font-size:13px;color:rgba(255,255,255,.7)}
+.bar .right a:hover{color:var(--neon-cyan)}
+.btn-neon{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;font-family:"Audiowide";letter-spacing:.06em;font-size:13px;text-transform:uppercase;
+  background:transparent;color:var(--neon-yellow);border:2px solid var(--neon-yellow);border-radius:6px;
+  box-shadow:inset 0 0 12px rgba(255,230,0,.2),0 0 16px rgba(255,230,0,.4);
+  transition:all .2s}
+.btn-neon:hover{background:var(--neon-yellow);color:#0a0014;box-shadow:0 0 24px rgba(255,230,0,.8),inset 0 0 16px rgba(255,255,255,.5)}
+.btn-neon.pink{color:var(--neon-pink);border-color:var(--neon-pink);box-shadow:inset 0 0 12px rgba(255,46,196,.2),0 0 16px rgba(255,46,196,.4)}
+.btn-neon.pink:hover{background:var(--neon-pink);color:#fff;box-shadow:0 0 24px rgba(255,46,196,.8)}
+.btn-neon.cyan{color:var(--neon-cyan);border-color:var(--neon-cyan);box-shadow:inset 0 0 12px rgba(0,240,255,.2),0 0 16px rgba(0,240,255,.4)}
+.btn-neon.cyan:hover{background:var(--neon-cyan);color:#0a0014;box-shadow:0 0 24px rgba(0,240,255,.8)}
+
+/* Hero */
+.hero{padding:60px 28px 40px;text-align:center;position:relative}
+.hero::before{content:"OPEN 24/7";position:absolute;font-family:"Bungee Shade";font-size:60px;color:transparent;-webkit-text-stroke:1px rgba(255,46,196,.2);top:14px;left:50%;transform:translateX(-50%);letter-spacing:.18em;pointer-events:none;opacity:.5}
+.tag-live{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--neon-cyan);border-radius:999px;font-family:"Space Grotesk";font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--neon-cyan);margin-bottom:24px;background:rgba(0,240,255,.05);box-shadow:0 0 12px rgba(0,240,255,.3)}
+.tag-live .dot{width:8px;height:8px;background:var(--neon-cyan);border-radius:50%;box-shadow:0 0 10px var(--neon-cyan);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.hero h1{font-family:"Monoton";font-size:140px;line-height:.9;letter-spacing:.04em;text-transform:uppercase;color:var(--neon-pink);text-shadow:0 0 30px rgba(255,46,196,.7),0 0 60px rgba(255,46,196,.5),0 0 90px rgba(255,46,196,.3);margin-bottom:18px;animation:flicker 6s infinite}
+@keyframes flicker{0%,18%,22%,25%,53%,57%,100%{opacity:1}19%,24%,55%{opacity:.6}}
+.hero h1 .alt{color:var(--neon-cyan);text-shadow:0 0 30px rgba(0,240,255,.7),0 0 60px rgba(0,240,255,.5)}
+.hero .sub{font-family:"Audiowide";font-size:24px;letter-spacing:.04em;color:var(--neon-yellow);text-shadow:0 0 12px rgba(255,230,0,.7);margin-bottom:18px;text-transform:uppercase}
+.hero p{font-family:"Space Grotesk";font-size:17px;color:rgba(255,255,255,.7);max-width:620px;margin:0 auto 30px;line-height:1.55}
+.hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* Stats marquee */
+.stats-strip{padding:30px 0;border-top:1px solid rgba(255,46,196,.3);border-bottom:1px solid rgba(255,46,196,.3);overflow:hidden;background:rgba(255,46,196,.05)}
+.strip-track{display:flex;gap:60px;animation:slide 30s linear infinite;font-family:"Audiowide";font-size:30px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.strip-track span{color:var(--neon-cyan);text-shadow:0 0 12px rgba(0,240,255,.6)}
+.strip-track .alt{color:var(--neon-pink);text-shadow:0 0 12px rgba(255,46,196,.6)}
+.strip-track .div{color:var(--neon-yellow)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Sections */
+.sec{padding:80px 32px}
+.sec-h{text-align:center;margin-bottom:50px;max-width:900px;margin-left:auto;margin-right:auto}
+.sec-h .label{display:inline-block;font-family:"Audiowide";font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-yellow);text-shadow:0 0 12px rgba(255,230,0,.7);margin-bottom:18px;padding:6px 14px;border:1px solid rgba(255,230,0,.4)}
+.sec-h h2{font-family:"Monoton";font-size:80px;line-height:1;letter-spacing:.03em;text-transform:uppercase;color:#fff;text-shadow:0 0 24px rgba(255,255,255,.3),0 0 50px rgba(255,46,196,.5)}
+.sec-h h2 .p{color:var(--neon-pink);text-shadow:0 0 30px rgba(255,46,196,.8)}
+.sec-h h2 .c{color:var(--neon-cyan);text-shadow:0 0 30px rgba(0,240,255,.8)}
+.sec-h p{font-family:"Space Grotesk";color:rgba(255,255,255,.55);font-size:17px;margin-top:18px;line-height:1.55}
+
+/* Slot machine defis */
+.slot{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1300px;margin:0 auto}
+.slot-card{padding:26px 22px;background:rgba(10,0,20,.6);border:2px solid rgba(255,46,196,.4);border-radius:14px;backdrop-filter:blur(10px);position:relative;overflow:hidden;transition:all .3s}
+.slot-card:nth-child(2n){border-color:rgba(0,240,255,.4)}
+.slot-card:nth-child(3n){border-color:rgba(255,230,0,.4)}
+.slot-card:nth-child(4n){border-color:rgba(168,85,247,.5)}
+.slot-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon-pink),transparent);opacity:.6}
+.slot-card:nth-child(2n)::before{background:linear-gradient(90deg,transparent,var(--neon-cyan),transparent)}
+.slot-card:nth-child(3n)::before{background:linear-gradient(90deg,transparent,var(--neon-yellow),transparent)}
+.slot-card:nth-child(4n)::before{background:linear-gradient(90deg,transparent,var(--neon-purple),transparent)}
+.slot-card:hover{transform:translateY(-6px);box-shadow:0 0 30px rgba(255,46,196,.4)}
+.slot-card .num{font-family:"Bungee Shade";font-size:60px;line-height:.9;color:var(--neon-pink);margin-bottom:8px;letter-spacing:-0.02em}
+.slot-card:nth-child(2n) .num{color:var(--neon-cyan)}
+.slot-card:nth-child(3n) .num{color:var(--neon-yellow)}
+.slot-card:nth-child(4n) .num{color:var(--neon-purple)}
+.slot-card h3{font-family:"Audiowide";font-size:20px;letter-spacing:.02em;text-transform:uppercase;line-height:1.05;margin-bottom:8px}
+.slot-card p{font-family:"Space Grotesk";font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:14px}
+.slot-card .meta{display:flex;justify-content:space-between;font-family:"Space Grotesk";font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);padding-top:10px;border-top:1px dashed rgba(255,255,255,.15)}
+.slot-card .meta .badge{color:var(--neon-green);text-shadow:0 0 8px rgba(57,255,20,.5)}
+
+/* Pull */
+.pull-vegas{padding:120px 32px;text-align:center;border-top:1px solid rgba(255,46,196,.3);border-bottom:1px solid rgba(255,46,196,.3);background:radial-gradient(ellipse at center,rgba(255,46,196,.1),transparent 70%);position:relative}
+.pull-vegas blockquote{font-family:"Bungee";font-size:90px;line-height:.95;letter-spacing:.01em;text-transform:uppercase;max-width:1100px;margin:0 auto;color:#fff;text-shadow:0 0 24px rgba(255,46,196,.5)}
+.pull-vegas blockquote em{color:var(--neon-yellow);text-shadow:0 0 30px rgba(255,230,0,.8);font-style:normal}
+.pull-vegas cite{display:block;font-family:"Audiowide";font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-cyan);margin-top:30px;text-shadow:0 0 12px rgba(0,240,255,.6);font-style:normal}
+
+/* Forfaits */
+.forfaits-v{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1300px;margin:0 auto}
+.fv{padding:36px 28px;background:rgba(10,0,20,.7);border:2px solid rgba(255,46,196,.3);border-radius:18px;backdrop-filter:blur(10px);display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden;transition:.3s}
+.fv:hover{transform:translateY(-6px);border-color:var(--neon-pink);box-shadow:0 0 40px rgba(255,46,196,.4)}
+.fv.feat{border-color:var(--neon-yellow);background:linear-gradient(135deg,rgba(255,230,0,.08),rgba(255,46,196,.05));box-shadow:0 0 30px rgba(255,230,0,.3)}
+.fv.feat::before{content:"★ JACKPOT";position:absolute;top:14px;right:-32px;background:var(--neon-yellow);color:#0a0014;font-family:"Audiowide";font-size:12px;letter-spacing:3px;padding:6px 36px;text-transform:uppercase;transform:rotate(40deg);box-shadow:0 0 20px rgba(255,230,0,.7)}
+.fv .label{font-family:"Audiowide";font-size:11px;letter-spacing:3px;color:var(--neon-cyan);text-transform:uppercase}
+.fv h3{font-family:"Monoton";font-size:48px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:var(--neon-pink);text-shadow:0 0 18px rgba(255,46,196,.6)}
+.fv.feat h3{color:var(--neon-yellow);text-shadow:0 0 18px rgba(255,230,0,.7)}
+.fv .price{font-family:"Bungee";font-size:48px;letter-spacing:0;line-height:.9;color:#fff}
+.fv .price small{display:block;font-family:"Space Grotesk";font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,.5);margin-top:6px}
+.fv ul{list-style:none;padding-top:14px;border-top:1px dashed rgba(255,255,255,.15);display:flex;flex-direction:column;gap:8px}
+.fv li{font-family:"Space Grotesk";font-size:14px;color:rgba(255,255,255,.75);display:flex;gap:10px;align-items:flex-start}
+.fv li::before{content:"◆";color:var(--neon-cyan);font-size:10px;margin-top:5px}
+.fv.feat li::before{color:var(--neon-yellow)}
+.fv .btn-neon{align-self:stretch;justify-content:center;margin-top:auto}
+
+/* CTA */
+.cta-vegas{padding:120px 32px;text-align:center;background:radial-gradient(ellipse at center,rgba(168,85,247,.18),transparent 70%);border-top:1px solid rgba(255,46,196,.3);position:relative}
+.cta-vegas::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 20px,rgba(255,46,196,.04) 20px 21px);pointer-events:none}
+.cta-vegas h2{font-family:"Monoton";font-size:120px;line-height:.95;letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 0 30px rgba(255,46,196,.6),0 0 60px rgba(0,240,255,.4);margin-bottom:24px;position:relative}
+.cta-vegas h2 .y{color:var(--neon-yellow);text-shadow:0 0 30px rgba(255,230,0,.8)}
+.cta-vegas p{font-family:"Space Grotesk";font-size:18px;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto 32px;line-height:1.55;position:relative}
+.cta-vegas .row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+
+.foot{padding:24px 28px;display:flex;justify-content:space-between;font-family:"Audiowide";font-size:11px;letter-spacing:3px;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,46,196,.2);text-transform:uppercase}
+
+@media (max-width:900px){
+  .hero h1{font-size:64px}
+  .slot,.forfaits-v{grid-template-columns:1fr}
+  .pull-vegas blockquote{font-size:42px}
+  .cta-vegas h2,.sec-h h2{font-size:48px}
+}
+</style></head>
+<body>
+
+<header class="bar">
+  <a href="../Homepage.html" class="logo">◆ ANIMACTION33</a>
+  <div class="right">
+    <a href="../Homepage.html#prestations">Prestations</a>
+    <a href="../Mariages.html">Mariages</a>
+    <a href="../TeamBuilding.html">Team</a>
+    <a href="../Contact.html" class="btn-neon" style="padding:6px 14px">Contact ►</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="tag-live"><span class="dot"></span>NIGHT MODE · ON</span>
+  <h1>EVG <span class="alt">×</span> EVF</h1>
+  <div class="sub">// La nuit qu'ils raconteront pendant 10 ans</div>
+  <p>Briefés par les témoins · scénarisés par nous · joués sans filet de 6 à 12 heures. Vegas vibes, gestion adulte.</p>
+  <div class="cta">
+    <a href="../Contact.html" class="btn-neon">⚡ Briefer un témoin</a>
+    <a href="#defis" class="btn-neon cyan">Voir les défis ►</a>
+  </div>
+</section>
+
+<div class="stats-strip"><div class="strip-track">
+  <span>120+ EVG ANIMÉS</span><span class="div">◆</span>
+  <span class="alt">30+ DÉFIS CATALOGUÉS</span><span class="div">◆</span>
+  <span>0% MAUVAISE SURPRISE</span><span class="div">◆</span>
+  <span class="alt">100% LÉGAL</span><span class="div">◆</span>
+  <span>DEVIS · 48H</span><span class="div">◆</span>
+  <span>120+ EVG ANIMÉS</span><span class="div">◆</span>
+  <span class="alt">30+ DÉFIS CATALOGUÉS</span><span class="div">◆</span>
+  <span>0% MAUVAISE SURPRISE</span><span class="div">◆</span>
+  <span class="alt">100% LÉGAL</span><span class="div">◆</span>
+  <span>DEVIS · 48H</span><span class="div">◆</span>
+</div></div>
+
+<section class="sec" id="defis">
+  <div class="sec-h">
+    <span class="label">// CATALOGUE</span>
+    <h2>Huit <span class="p">défis</span> qui font des <span class="c">légendes</span>.</h2>
+    <p>Choisissez 2 à 4 défis par session. Chaque scénario est réécrit avec les témoins.</p>
+  </div>
+  <div class="slot">
+    <article class="slot-card"><div class="num">01</div><h3>Olympiades<br/>déjantées</h3><p>Tir à l'arc à ventouses, sumos gonflables, courses en sac.</p><div class="meta"><span>OUTDOOR</span><span class="badge">3H</span></div></article>
+    <article class="slot-card"><div class="num">02</div><h3>Murder<br/>party</h3><p>Le/la futur·e enquête. Ou est suspect·e. Ça dépend.</p><div class="meta"><span>INDOOR</span><span class="badge">2H</span></div></article>
+    <article class="slot-card"><div class="num">03</div><h3>Chasse au<br/>trésor</h3><p>Énigmes, défis aux passants, photos imposées en ville.</p><div class="meta"><span>URBAIN</span><span class="badge">4H</span></div></article>
+    <article class="slot-card"><div class="num">04</div><h3>Koh-Lanta<br/>adultes</h3><p>Force, équilibre, conseil avec bâton de la honte.</p><div class="meta"><span>FORÊT</span><span class="badge">5H</span></div></article>
+    <article class="slot-card"><div class="num">05</div><h3>Blind test<br/>karaoké</h3><p>5 manches thématiques, gages corsés, light show pro.</p><div class="meta"><span>SOIRÉE</span><span class="badge">3H</span></div></article>
+    <article class="slot-card"><div class="num">06</div><h3>Escape<br/>XXL</h3><p>Salle louée pour vous · scénario aux mesures.</p><div class="meta"><span>SUR SITE</span><span class="badge">1H30</span></div></article>
+    <article class="slot-card"><div class="num">07</div><h3>Quiz<br/>perso</h3><p>Construit avec les témoins. Sur-mesure pur.</p><div class="meta"><span>REPAS</span><span class="badge">2H</span></div></article>
+    <article class="slot-card"><div class="num">08</div><h3>La<br/>cérémonie</h3><p>Vœux loufoques, diplôme, cape, couronne. Cinéma.</p><div class="meta"><span>FINAL</span><span class="badge">30M</span></div></article>
+  </div>
+</section>
+
+<section class="pull-vegas">
+  <blockquote>« On crée des souvenirs <em>épiques</em>,<br/>jamais des regrets. »</blockquote>
+  <cite>// Notre règle d'or, signée et tamponnée</cite>
+</section>
+
+<section class="sec">
+  <div class="sec-h">
+    <span class="label">// FORMULES</span>
+    <h2>Trois <span class="p">jackpots</span> au choix.</h2>
+  </div>
+  <div class="forfaits-v">
+    <div class="fv">
+      <span class="label">// FORMULE A</span>
+      <h3>Après-midi</h3>
+      <div class="price">249€<small>3H · 2 défis · 8–15 pers.</small></div>
+      <ul>
+        <li>2 défis combinés</li>
+        <li>Briefing témoins · scénario léger</li>
+        <li>Sono portative</li>
+        <li>Accessoires + gages + cadeaux</li>
+        <li>Animateur 3h</li>
+      </ul>
+      <a href="../Contact.html" class="btn-neon cyan">Réserver</a>
+    </div>
+    <div class="fv feat">
+      <span class="label">// FORMULE B</span>
+      <h3>Journée</h3>
+      <div class="price">449€<small>6H · 4 défis · jusqu'à 25 pers.</small></div>
+      <ul>
+        <li>4 défis enchaînés · scénario complet</li>
+        <li>2 RDV de prépa avec témoins</li>
+        <li>Cérémonie de remise du diplôme</li>
+        <li>Photographe souvenir · 2h</li>
+        <li>Costumes · accessoires · cadeau perso</li>
+        <li>Animateur 6h</li>
+      </ul>
+      <a href="../Contact.html" class="btn-neon">Tirer le jackpot ►</a>
+    </div>
+    <div class="fv">
+      <span class="label">// FORMULE C</span>
+      <h3>Week-end</h3>
+      <div class="price">SUR DEVIS<small>2 jours · sur-mesure</small></div>
+      <ul>
+        <li>Scénario écrit pour vous</li>
+        <li>6 à 8 défis sur 2 jours</li>
+        <li>Coordination logement / resto / activités</li>
+        <li>Photographe + vidéo souvenir</li>
+        <li>2 animateurs · matériel pro</li>
+      </ul>
+      <a href="../Contact.html" class="btn-neon pink">Demander un devis</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-vegas">
+  <h2>READY <span class="y">player</span> 1 ?</h2>
+  <p>30 minutes de visio offertes pour calibrer le ton, les interdits et l'intensité avec les témoins. Le reste suit.</p>
+  <div class="row">
+    <a href="../Contact.html" class="btn-neon">⚡ Briefer maintenant</a>
+    <a href="tel:0677243675" class="btn-neon cyan">📞 06 77 24 36 75</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>© 2026 · ANIMACTION33 · LIBOURNE</span>
+  <span>06 77 24 36 75 · CONTACT@ANIMACTION33.FR</span>
+</footer>
+
+</body></html>

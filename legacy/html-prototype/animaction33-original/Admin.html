@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — AnimAction33</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Bebas+Neue&family=Bungee&family=Rubik+Mono+One&family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=DM+Sans:wght@400;500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1C5FD8;
+  --red: #E8252C;
+  --yellow: #FFC91F;
+  --ink: #0F1B3D;
+  --paper: #FFFDF6;
+  --bg: #F5F6FA;
+  --panel: #FFFFFF;
+  --line: #E6E8F0;
+  --muted: #6B7185;
+
+  --font-display: "Archivo Black", sans-serif;
+  --font-body: "Figtree", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--ink); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* Layout */
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+.sidebar {
+  background: var(--ink);
+  color: #fff;
+  padding: 20px 14px;
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh;
+}
+.sb-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  margin-bottom: 14px;
+}
+.sb-brand img { width: 40px; height: 40px; border-radius: 10px; }
+.sb-brand b { font-family: var(--font-display); font-size: 16px; letter-spacing: .5px; }
+.sb-badge {
+  background: var(--red); color: #fff;
+  font-size: 10px; padding: 2px 8px; border-radius: 999px;
+  margin-left: auto; font-weight: 800; letter-spacing: 1px;
+}
+.sb-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.sb-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  color: rgba(255,255,255,.75);
+  font-weight: 600; font-size: 14px;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+}
+.sb-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+.sb-link.active { background: var(--yellow); color: var(--ink); }
+.sb-link .ic { width: 20px; height: 20px; display: inline-flex; }
+.sb-foot { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
+.sb-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px; border-radius: 10px;
+  font-weight: 700; font-size: 13px;
+}
+.sb-btn.ghost { background: rgba(255,255,255,.08); color: #fff; }
+.sb-btn.ghost:hover { background: rgba(255,255,255,.14); }
+.sb-btn.danger { background: var(--red); color: #fff; }
+.sb-btn.danger:hover { background: #b81c22; }
+
+/* Main */
+.admin-main { padding: 28px 32px; min-width: 0; }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 28px;
+}
+.topbar h1 { font-family: var(--font-display); font-size: 26px; margin: 0; }
+.topbar .crumb { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.a-btn {
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-weight: 700; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform .12s;
+}
+.a-btn:hover { transform: translateY(-1px); }
+.a-btn.primary { background: var(--ink); color: #fff; }
+.a-btn.red { background: var(--red); color: #fff; }
+.a-btn.yellow { background: var(--yellow); color: var(--ink); }
+.a-btn.ghost { background: var(--panel); color: var(--ink); border: 1px solid var(--line); }
+.a-btn.green { background: #22c55e; color: #fff; }
+
+.a-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--yellow); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+}
+
+/* Cards */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+}
+.panel h3 { font-family: var(--font-display); font-size: 16px; margin: 0 0 16px; text-transform: uppercase; letter-spacing: .5px; }
+
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-bottom: 22px;
+}
+@media (max-width: 1000px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+.stat-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-panel .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+.stat-panel .val { font-family: var(--font-display); font-size: 34px; margin: 8px 0 2px; }
+.stat-panel .delta { font-size: 12px; font-weight: 700; }
+.delta.up { color: #16a34a; }
+.delta.down { color: #dc2626; }
+.stat-panel .ic-bg {
+  position: absolute; top: 12px; right: 12px;
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.stat-panel.c1 .ic-bg { background: rgba(28,95,216,.12); color: var(--blue); }
+.stat-panel.c2 .ic-bg { background: rgba(232,37,44,.12); color: var(--red); }
+.stat-panel.c3 .ic-bg { background: rgba(255,201,31,.2); color: #a77f00; }
+.stat-panel.c4 .ic-bg { background: rgba(15,27,61,.08); color: var(--ink); }
+
+/* Quick actions */
+.quick-actions {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+@media (max-width: 800px) { .quick-actions { grid-template-columns: 1fr 1fr; } }
+.qa {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  transition: border-color .15s, transform .12s;
+}
+.qa:hover { border-color: var(--ink); transform: translateY(-2px); }
+.qa-ic {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.qa.c1 .qa-ic { background: #E8EFFC; color: var(--blue); }
+.qa.c2 .qa-ic { background: #FDE3E4; color: var(--red); }
+.qa.c3 .qa-ic { background: #FFF3C0; color: #a77f00; }
+.qa.c4 .qa-ic { background: #DCF7E3; color: #16a34a; }
+.qa.c5 .qa-ic { background: #F3E8FF; color: #7c3aed; }
+.qa.c6 .qa-ic { background: #FFE4C7; color: #ea580c; }
+.qa b { display: block; font-size: 14px; margin-bottom: 2px; }
+.qa span { font-size: 12px; color: var(--muted); }
+
+/* Grid */
+.dash-grid {
+  display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px;
+}
+@media (max-width: 1000px) { .dash-grid { grid-template-columns: 1fr; } }
+
+/* Checklist */
+.check-acc {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.check-head {
+  padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; font-weight: 700; font-size: 14px;
+}
+.check-head:hover { background: #F7F8FC; }
+.check-head .pct { font-size: 12px; color: var(--muted); font-weight: 600; }
+.check-body { padding: 0 16px 14px; display: none; }
+.check-acc.open .check-body { display: block; }
+.check-line {
+  display: flex; gap: 10px; align-items: center;
+  padding: 6px 0; font-size: 13.5px;
+}
+.check-line input { accent-color: var(--red); width: 16px; height: 16px; }
+.check-line.done { color: var(--muted); text-decoration: line-through; }
+
+/* Tip card */
+.tip-card {
+  background: linear-gradient(135deg, var(--yellow), #ffd95a);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 20px;
+  color: var(--ink);
+}
+.tip-card h4 { font-family: var(--font-display); margin: 0 0 6px; font-size: 15px; text-transform: uppercase; }
+.tip-card p { margin: 0 0 10px; font-size: 14px; font-weight: 500; line-height: 1.55; }
+.tip-card .tip-ic { font-size: 28px; margin-bottom: 6px; display: block; }
+
+/* Table */
+.a-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14px;
+}
+.a-table th {
+  text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line);
+  font-weight: 700;
+}
+.a-table td {
+  padding: 12px; border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.a-table tr:hover td { background: #F7F8FC; }
+.a-table input[type=text], .a-table input[type=number] {
+  width: 100%; border: 1px solid transparent;
+  background: transparent;
+  padding: 6px 8px; border-radius: 6px;
+  font-size: 14px; font-family: inherit;
+}
+.a-table input:hover { border-color: var(--line); }
+.a-table input:focus { border-color: var(--blue); background: #fff; outline: none; }
+.badge {
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+}
+.badge.popular { background: var(--yellow); color: var(--ink); }
+.badge.new { background: var(--red); color: #fff; }
+.badge.draft { background: var(--line); color: var(--muted); }
+
+.row-actions button {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: transparent; color: var(--muted);
+  font-size: 14px;
+}
+.row-actions button:hover { background: var(--line); color: var(--ink); }
+
+.accordion-p {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.accordion-p-head {
+  padding: 16px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; background: #FAFBFE;
+}
+.accordion-p-head h4 { margin: 0; font-family: var(--font-display); font-size: 15px; text-transform: uppercase; }
+.accordion-p-body { display: none; padding: 10px 20px 20px; }
+.accordion-p.open .accordion-p-body { display: block; }
+.accordion-p .caret { transition: transform .2s; }
+.accordion-p.open .caret { transform: rotate(180deg); }
+
+/* Page toggle */
+.page-toggle {
+  display: flex; gap: 8px; margin-bottom: 20px;
+  padding: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  width: fit-content;
+}
+.page-toggle button {
+  padding: 8px 16px; border-radius: 6px;
+  font-weight: 700; font-size: 13px;
+  color: var(--muted);
+}
+.page-toggle button.active { background: var(--ink); color: #fff; }
+
+.save-bar {
+  position: sticky; bottom: 0;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding: 14px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 30px -32px -28px;
+  font-size: 13px;
+}
+
+.section-view { display: none; }
+.section-view.active { display: block; }
+
+.admin-toast {
+  position: fixed; top: 24px; right: 24px;
+  background: #16a34a; color: #fff;
+  padding: 12px 20px; border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  transform: translateX(120%);
+  transition: transform .3s;
+  z-index: 100;
+}
+.admin-toast.show { transform: translateX(0); }
+
+/* Drag-drop zones (galerie, bandeau) */
+.dropzone {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--muted);
+  background: #FAFBFE;
+  transition: border-color .15s, background .15s;
+}
+.dropzone:hover { border-color: var(--blue); background: #F0F5FE; }
+.dropzone .big { font-size: 40px; margin-bottom: 10px; }
+
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  margin-top: 20px;
+}
+@media (max-width: 900px) { .gallery-grid { grid-template-columns: 1fr 1fr; } }
+.gallery-thumb {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #ddd, #bbb);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  color: #fff;
+  font-weight: 900;
+}
+.gallery-thumb.c1 { background: linear-gradient(135deg, var(--yellow), #ffa500); }
+.gallery-thumb.c2 { background: linear-gradient(135deg, var(--blue), #4a8eff); }
+.gallery-thumb.c3 { background: linear-gradient(135deg, var(--red), #ff6970); }
+.gallery-thumb.c4 { background: linear-gradient(135deg, #16a34a, #5dd87f); }
+.gallery-thumb.c5 { background: linear-gradient(135deg, #7c3aed, #b48cff); }
+.gallery-overlay {
+  position: absolute; inset: 0; background: rgba(15,27,61,.6);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  opacity: 0; transition: opacity .2s;
+}
+.gallery-thumb:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay button {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: #fff; color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+
+/* Bandeau preview */
+.bandeau-preview {
+  background: var(--ink); color: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
+}
+.bandeau-preview .bp-marquee {
+  display: flex; gap: 30px;
+  animation: bp-scroll 20s linear infinite;
+  white-space: nowrap;
+  font-weight: 700;
+}
+@keyframes bp-scroll {
+  0% { transform: translateX(0); } 100% { transform: translateX(-50%); }
+}
+.bandeau-items { margin-top: 14px; }
+.bandeau-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: #FAFBFE;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.bandeau-item .drag { cursor: grab; color: var(--muted); font-size: 18px; }
+.bandeau-item input { flex: 1; border: none; background: transparent; font-family: inherit; font-size: 14px; }
+
+.toggle-switch {
+  width: 44px; height: 26px;
+  background: var(--line);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.toggle-switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff;
+  transition: transform .2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
+.toggle-switch.on { background: #22c55e; }
+.toggle-switch.on::after { transform: translateX(18px); }
+
+/* Testimonials admin */
+.testi-admin {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px;
+  background: #FAFBFE;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+.testi-admin .ta-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--yellow); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.testi-admin .ta-body { flex: 1; }
+.testi-admin .ta-name { font-weight: 800; }
+.testi-admin .ta-stars { color: var(--yellow); font-size: 13px; }
+.testi-admin .ta-text { font-size: 13px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+.wa-template {
+  background: #ECFEF3;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  position: relative;
+  margin-top: 12px;
+}
+.wa-template .copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: #22c55e; color: #fff;
+  padding: 5px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .admin-shell { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; flex-direction: row; overflow-x: auto; gap: 10px; }
+  .sb-nav { flex-direction: row; }
+  .sb-foot, .sb-brand { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <img src="assets/logo.png" alt=""/>
+      <b>AnimAction</b>
+      <span class="sb-badge">ADMIN</span>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-link active" data-view="dashboard"><span class="ic">📊</span>Dashboard</div>
+      <div class="sb-section-label">Contenu site</div>
+      <div class="sb-link" data-view="hero"><span class="ic">🎬</span>Hero & Slogan</div>
+      <div class="sb-link" data-view="stats"><span class="ic">📈</span>Chiffres-clés</div>
+      <div class="sb-link" data-view="bandeau"><span class="ic">📢</span>Banderole</div>
+      <div class="sb-link" data-view="presta-cards"><span class="ic">🎪</span>Cartes prestations</div>
+      <div class="sb-link" data-view="games"><span class="ic">🎲</span>Catalogue jeux</div>
+      <div class="sb-link" data-view="testimonials"><span class="ic">⭐</span>Témoignages</div>
+      <div class="sb-link" data-view="faq"><span class="ic">❓</span>FAQ</div>
+      <div class="sb-link" data-view="contact"><span class="ic">📞</span>Contact</div>
+      <div class="sb-section-label">Catalogue</div>
+      <div class="sb-link" data-view="tarifs"><span class="ic">💰</span>Tarifs</div>
+      <div class="sb-link" data-view="prestations"><span class="ic">🔌</span>Activation pages</div>
+      <div class="sb-section-label">Média</div>
+      <div class="sb-link" data-view="galerie"><span class="ic">🖼️</span>Galerie</div>
+      <div class="sb-link" data-view="blog"><span class="ic">📝</span>Blog</div>
+      <div class="sb-section-label">Système</div>
+      <div class="sb-link" data-view="settings"><span class="ic">⚙️</span>Paramètres</div>
+    </nav>
+    <div class="sb-foot">
+      <a href="Homepage.html" class="sb-btn ghost">↗ Voir le site</a>
+      <button class="sb-btn danger">Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+
+    <!-- Dashboard -->
+    <div class="section-view active" data-section="dashboard">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Dashboard</div>
+          <h1>Bonjour Gwen 👋</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="a-btn ghost">🔔 2 notifs</button>
+          <div class="a-avatar">G</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-panel c1">
+          <div class="ic-bg">⭐</div>
+          <div class="label">Témoignages</div>
+          <div class="val">12</div>
+          <div class="delta up">+2 ce mois</div>
+        </div>
+        <div class="stat-panel c2">
+          <div class="ic-bg">📝</div>
+          <div class="label">Articles</div>
+          <div class="val">4</div>
+          <div class="delta up">+1 ce mois</div>
+        </div>
+        <div class="stat-panel c3">
+          <div class="ic-bg">🖼️</div>
+          <div class="label">Photos galerie</div>
+          <div class="val">87</div>
+          <div class="delta up">+14 récemment</div>
+        </div>
+        <div class="stat-panel c4">
+          <div class="ic-bg">🕑</div>
+          <div class="label">Dernière modif</div>
+          <div class="val" style="font-size: 22px">il y a 3h</div>
+          <div class="delta" style="color:var(--muted)">Page tarifs</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 22px">
+        <h3 style="font-family: var(--font-display); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px">ACTIONS RAPIDES</h3>
+        <div class="quick-actions">
+          <div class="qa c1"><div class="qa-ic">➕</div><div><b>Nouvelle prestation</b><span>Ajouter une offre</span></div></div>
+          <div class="qa c2"><div class="qa-ic">💰</div><div><b>Modifier les tarifs</b><span>Grille & formules</span></div></div>
+          <div class="qa c3"><div class="qa-ic">📢</div><div><b>Bandeau confiance</b><span>Edit en 1 clic</span></div></div>
+          <div class="qa c4"><div class="qa-ic">⭐</div><div><b>Ajouter un avis</b><span>Témoignage client</span></div></div>
+          <div class="qa c5"><div class="qa-ic">📸</div><div><b>Uploader photos</b><span>Galerie événements</span></div></div>
+          <div class="qa c6"><div class="qa-ic">📝</div><div><b>Article blog</b><span>Rédiger un post</span></div></div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <h3>Checklist de lancement</h3>
+          <div class="check-acc open">
+            <div class="check-head"><span>📋 Contenu & pages</span><span class="pct">3/4 · 75%</span></div>
+            <div class="check-body">
+              <div class="check-line done"><input type="checkbox" checked disabled/>Rédiger les 3 pages prestations principales</div>
+              <div class="check-line done"><input type="checkbox" checked disabled/>Ajouter le formulaire multi-étapes</div>
+              <div class="check-line done"><input type="checkbox" checked disabled/>Mettre en ligne le catalogue de jeux</div>
+              <div class="check-line"><input type="checkbox"/>Rédiger 3 premiers articles de blog</div>
+            </div>
+          </div>
+          <div class="check-acc">
+            <div class="check-head"><span>🎨 Identité visuelle</span><span class="pct">4/4 · 100%</span></div>
+          </div>
+          <div class="check-acc">
+            <div class="check-head"><span>⚙️ Technique & SEO</span><span class="pct">2/5 · 40%</span></div>
+          </div>
+          <div class="check-acc">
+            <div class="check-head"><span>📣 Lancement marketing</span><span class="pct">1/6 · 17%</span></div>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <span class="tip-ic">💡</span>
+          <h4>Conseil marketing du jour</h4>
+          <p>Les familles cherchent souvent <b>"animateur anniversaire + ville"</b>. Pense à ajouter 3-4 villes desservies (Libourne, Saint-Émilion, Pomerol, Bordeaux) dans ton H1 et dans le footer pour le SEO local.</p>
+          <button class="a-btn red" style="padding:8px 14px; font-size:12px">Voir les autres conseils →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarifs -->
+    <div class="section-view" data-section="tarifs">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Gestion</div>
+          <h1>Tarifs & formules</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="a-btn ghost">👁 Aperçu</button>
+          <button class="a-btn red" onclick="showAdminToast('✓ Modifications enregistrées')">💾 Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="accordion-p open">
+        <div class="accordion-p-head"><h4>🎂 Anniversaires · 3 formules</h4><span class="caret">▼</span></div>
+        <div class="accordion-p-body">
+          <table class="a-table">
+            <thead><tr><th>Nom formule</th><th>Prix</th><th>Durée</th><th>Nb max</th><th>Badge</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><input type="text" value="Découverte"/></td><td><input type="text" value="199€"/></td><td><input type="text" value="1h30"/></td><td><input type="number" value="10"/></td><td><span class="badge draft">—</span></td><td class="row-actions"><button>⋮</button></td></tr>
+              <tr><td><input type="text" value="Aventure"/></td><td><input type="text" value="269€"/></td><td><input type="text" value="2h30"/></td><td><input type="number" value="20"/></td><td><span class="badge popular">Populaire</span></td><td class="row-actions"><button>⋮</button></td></tr>
+              <tr><td><input type="text" value="Épique"/></td><td><input type="text" value="Sur devis"/></td><td><input type="text" value="3h+"/></td><td><input type="number" value="40"/></td><td><span class="badge new">Nouveau</span></td><td class="row-actions"><button>⋮</button></td></tr>
+            </tbody>
+          </table>
+          <button class="a-btn ghost" style="margin-top: 12px">+ Ajouter une formule</button>
+        </div>
+      </div>
+
+      <div class="accordion-p">
+        <div class="accordion-p-head"><h4>💍 Mariages · 2 formules</h4><span class="caret">▼</span></div>
+      </div>
+      <div class="accordion-p">
+        <div class="accordion-p-head"><h4>🥂 EVG / EVF · 3 formules</h4><span class="caret">▼</span></div>
+      </div>
+      <div class="accordion-p">
+        <div class="accordion-p-head"><h4>🏢 Team Building · 2 formules</h4><span class="caret">▼</span></div>
+      </div>
+
+      <div class="save-bar">
+        <span style="color:var(--muted)">Les changements sont sauvegardés automatiquement toutes les 30s</span>
+        <button class="a-btn red" onclick="showAdminToast('✓ Tarifs publiés sur le site')">🚀 Publier les changements</button>
+      </div>
+    </div>
+
+    <!-- Bandeau -->
+    <div class="section-view" data-section="bandeau">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Communication</div>
+          <h1>Bandeau de confiance</h1>
+        </div>
+        <div class="topbar-actions">
+          <div style="display:flex; gap:10px; align-items:center; font-weight:700">
+            Bandeau actif
+            <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom: 22px">
+        <h3>Aperçu en direct</h3>
+        <div class="bandeau-preview">
+          <div class="bp-marquee">
+            <span>🎓 BAFA + BAFD</span><span>🥋 3e Dan Vovinam</span><span>🛡️ RC Pro</span><span>📍 Libourne & Gironde</span><span>✅ PSC1 & PSE1</span>
+            <span>🎓 BAFA + BAFD</span><span>🥋 3e Dan Vovinam</span><span>🛡️ RC Pro</span><span>📍 Libourne & Gironde</span><span>✅ PSC1 & PSE1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Items du bandeau</h3>
+        <div class="bandeau-items">
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="🎓 BAFA + BAFD"/><div class="toggle-switch on"></div><button class="row-actions"><button>🗑</button></button></div>
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="🥋 3e Dan Vovinam"/><div class="toggle-switch on"></div></div>
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="🛡️ RC Pro"/><div class="toggle-switch on"></div></div>
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="📍 Libourne &amp; Gironde"/><div class="toggle-switch on"></div></div>
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="✅ PSC1 &amp; PSE1"/><div class="toggle-switch on"></div></div>
+          <div class="bandeau-item"><span class="drag">⋮⋮</span><input value="🎪 10 ans d'expérience"/><div class="toggle-switch"></div></div>
+        </div>
+        <button class="a-btn ghost" style="margin-top: 12px">+ Ajouter un item</button>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="section-view" data-section="testimonials">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Communication</div>
+          <h1>Témoignages clients</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="a-btn ghost">📥 Importer Google</button>
+          <button class="a-btn red">+ Nouveau témoignage</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>12 témoignages · 11 affichés</h3>
+        <div class="testi-admin">
+          <div class="ta-avatar">M</div>
+          <div class="ta-body">
+            <div class="ta-name">Marie L. · Bordeaux</div>
+            <div class="ta-stars">★★★★★</div>
+            <div class="ta-text">« Gwen a été parfait pour les 8 ans de notre fils. Les enfants étaient en transe. »</div>
+          </div>
+          <div class="toggle-switch on"></div>
+        </div>
+        <div class="testi-admin">
+          <div class="ta-avatar" style="background: var(--red); color:#fff">T</div>
+          <div class="ta-body">
+            <div class="ta-name">Thomas D. · DRH</div>
+            <div class="ta-stars">★★★★★</div>
+            <div class="ta-text">« Pour notre team building, même les plus timides ont joué le jeu. »</div>
+          </div>
+          <div class="toggle-switch on"></div>
+        </div>
+        <div class="testi-admin">
+          <div class="ta-avatar" style="background: var(--blue); color:#fff">A</div>
+          <div class="ta-body">
+            <div class="ta-name">Anaïs &amp; Kevin · Mariés</div>
+            <div class="ta-stars">★★★★★</div>
+            <div class="ta-text">« Animation du vin d'honneur au cocktail — nos invités n'ont pas décroché. »</div>
+          </div>
+          <div class="toggle-switch on"></div>
+        </div>
+        <div class="testi-admin">
+          <div class="ta-avatar" style="background: #22c55e; color:#fff">C</div>
+          <div class="ta-body">
+            <div class="ta-name">Camille F. · Libourne</div>
+            <div class="ta-stars">★★★★☆</div>
+            <div class="ta-text">« Super anim, bien préparée. Juste un tout petit peu juste sur le timing. »</div>
+          </div>
+          <div class="toggle-switch"></div>
+        </div>
+
+        <div class="wa-template">
+          <button class="copy-btn" onclick="showAdminToast('✓ Template copié')">📋 Copier</button>
+          <b>📱 Template WhatsApp à envoyer après un événement :</b><br/>
+          « Hello [prénom] ! J'espère que [événement] s'est super bien passé 🎉 Si t'as 2 min, un petit témoignage sur mon site m'aiderait beaucoup — lien ici : animaction33.fr/avis. Merci ! — Gwen »
+        </div>
+      </div>
+    </div>
+
+    <!-- Galerie -->
+    <div class="section-view" data-section="galerie">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Média</div>
+          <h1>Galerie photos</h1>
+        </div>
+        <div class="topbar-actions">
+          <select style="padding:9px 14px; border:1px solid var(--line); border-radius: 10px; font-family: inherit; font-weight: 700"><option>Toutes catégories</option><option>Anniversaires</option><option>Mariages</option><option>Team Building</option></select>
+        </div>
+      </div>
+
+      <div class="dropzone">
+        <div class="big">📸</div>
+        <div><b>Glissez vos photos ici</b> ou cliquez pour parcourir</div>
+        <div style="font-size: 12px; margin-top: 6px">JPG, PNG, WebP — max 10 Mo</div>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-thumb c1">🎂<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c2">💍<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c3">🥂<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c4">🏢<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c5">🎯<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c1">🏝️<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c2">🏆<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+        <div class="gallery-thumb c3">🎭<div class="gallery-overlay"><button>✏️</button><button>👁‍🗨</button><button>🗑</button></div></div>
+      </div>
+    </div>
+
+    <!-- Blog, Settings (placeholders) -->
+    <div class="section-view" data-section="blog">
+      <div class="topbar"><div><div class="crumb">Admin · Contenu</div><h1>Articles de blog</h1></div><button class="a-btn red">+ Nouvel article</button></div>
+      <div class="panel"><p style="color:var(--muted)">Liste des articles (WIP) — 4 articles publiés, 1 brouillon.</p></div>
+    </div>
+    <!-- Prestations activation -->
+    <div class="section-view" data-section="prestations">
+      <div class="topbar">
+        <div>
+          <div class="crumb">Admin · Catalogue</div>
+          <h1>Prestations · activation</h1>
+        </div>
+      </div>
+      <div class="panel">
+        <p style="color:var(--muted);margin-bottom:18px">Active une prestation pour la rendre visible sur le site (homepage + page dédiée). Désactivée, elle disparaît de la home et la page affiche un bandeau "bientôt disponible".</p>
+        <div id="presta-toggles" style="display:flex;flex-direction:column;gap:14px"></div>
+      </div>
+    </div>
+
+    <div class="section-view" data-section="settings">
+      <div class="topbar"><div><div class="crumb">Admin · Réglages</div><h1>Paramètres</h1></div></div>
+      <div class="panel"><p style="color:var(--muted)">Réglages généraux, comptes utilisateurs, sauvegardes…</p></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="admin-toast" id="admin-toast"></div>
+
+<script>
+document.querySelectorAll(".sb-link").forEach(link => {
+  link.addEventListener("click", () => {
+    document.querySelectorAll(".sb-link").forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+    const view = link.getAttribute("data-view");
+    document.querySelectorAll(".section-view").forEach(s => s.classList.remove("active"));
+    document.querySelector(`[data-section="${view}"]`).classList.add("active");
+  });
+});
+document.querySelectorAll(".check-head").forEach(h => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+document.querySelectorAll(".accordion-p-head").forEach(h => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+document.querySelectorAll(".toggle-switch").forEach(s => s.addEventListener("click", () => s.classList.toggle("on")));
+
+function showAdminToast(msg) {
+  const t = document.getElementById("admin-toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+// "Admin fidèle" easter egg — 3 loads
+const loads = parseInt(localStorage.getItem("aa_admin_loads") || "0", 10) + 1;
+localStorage.setItem("aa_admin_loads", loads);
+if (loads >= 3 && !localStorage.getItem("aa_admin_badge_shown")) {
+  localStorage.setItem("aa_admin_badge_shown", "1");
+  setTimeout(() => showAdminToast("🏆 Badge débloqué : Admin fidèle"), 1000);
+}
+
+// === Prestations activation panel ===
+(function(){
+  const PRESTAS = [
+    { key:"mariages", title:"Mariages", emoji:"💍", page:"Mariages.html", desc:"Cérémonies, soirées, animations sur-mesure pour les mariés." },
+    { key:"evg",      title:"EVG / EVF", emoji:"🥂", page:"EVG-EVF.html", desc:"Enterrements de vie de garçon/fille — défis, scénarios, ambiance." },
+    { key:"team",     title:"Team Building", emoji:"🏢", page:"TeamBuilding.html", desc:"Olympiades & cohésion pour entreprises (jusqu'à 200 pers.)." },
+  ];
+  function flags(){
+    try { return Object.assign({mariages:false,evg:false,team:false}, JSON.parse(localStorage.getItem("aa_presta_flags") || "{}")); }
+    catch(e){ return {mariages:false,evg:false,team:false}; }
+  }
+  function set(k,on){
+    const f = flags(); f[k] = !!on;
+    localStorage.setItem("aa_presta_flags", JSON.stringify(f));
+    render();
+    showAdminToast(`${on?"✅":"⏸"} ${PRESTAS.find(p=>p.key===k).title} ${on?"activée":"désactivée"}`);
+  }
+  function render(){
+    const root = document.getElementById("presta-toggles");
+    if(!root) return;
+    const f = flags();
+    root.innerHTML = PRESTAS.map(p=>{
+      const on = f[p.key];
+      return `
+        <div class="presta-row" data-key="${p.key}" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:18px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)">
+          <div style="font-size:34px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:12px">${p.emoji}</div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+              <strong style="font-size:16px">${p.title}</strong>
+              <span class="pst-badge" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:999px;font-weight:700;${on?'background:#D1FAE5;color:#065F46':'background:#F3F4F6;color:#6B7185'}">${on?'● EN LIGNE':'○ HORS-LIGNE'}</span>
+            </div>
+            <div style="color:var(--muted);font-size:13.5px;line-height:1.45">${p.desc}</div>
+          </div>
+          <a href="${p.page}" target="_blank" style="font-size:12px;color:var(--blue);font-weight:600;letter-spacing:.3px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none">Aperçu ↗</a>
+          <label class="pst-switch" style="position:relative;display:inline-block;width:54px;height:30px;cursor:pointer">
+            <input type="checkbox" data-key="${p.key}" ${on?'checked':''} style="opacity:0;width:0;height:0"/>
+            <span style="position:absolute;inset:0;background:${on?'var(--blue)':'#D1D5DB'};border-radius:999px;transition:.2s"></span>
+            <span style="position:absolute;top:3px;left:${on?'27px':'3px'};width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
+          </label>
+        </div>`;
+    }).join("");
+    root.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener("change", e=>set(cb.dataset.key, cb.checked));
+    });
+  }
+  render();
+})();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "preset": "Light",
+  "blue": "#1C5FD8",
+  "red": "#E8252C",
+  "yellow": "#FFC91F",
+  "ink": "#0F1B3D",
+  "bg": "#F5F6FA",
+  "panel": "#FFFFFF",
+  "line": "#E6E8F0",
+  "muted": "#6B7185",
+  "fontDisplay": "Archivo Black",
+  "fontBody": "Figtree",
+  "bodySize": 14,
+  "sidebarW": 240,
+  "density": "regular"
+}/*EDITMODE-END*/;
+
+function App(){
+  const [t,setT] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(()=>{
+    const r = document.documentElement.style;
+    r.setProperty("--blue",t.blue); r.setProperty("--red",t.red);
+    r.setProperty("--yellow",t.yellow); r.setProperty("--ink",t.ink);
+    r.setProperty("--bg",t.bg); r.setProperty("--panel",t.panel);
+    r.setProperty("--line",t.line); r.setProperty("--muted",t.muted);
+    r.setProperty("--font-display",`"${t.fontDisplay}", sans-serif`);
+    r.setProperty("--font-body",`"${t.fontBody}", system-ui, sans-serif`);
+    document.body.style.fontSize = t.bodySize+"px";
+    const sh = document.querySelector(".admin-shell");
+    if(sh) sh.style.gridTemplateColumns = t.sidebarW+"px 1fr";
+    const dens = {compact:"10px 14px",regular:"14px 20px",comfy:"22px 28px"}[t.density] || "14px 20px";
+    document.querySelectorAll(".panel,.card,.kpi,.row").forEach(el=>{
+      // gentle density tweak
+    });
+  },[t]);
+
+  function applyPreset(name){
+    const presets = {
+      "Light":     {bg:"#F5F6FA",panel:"#FFFFFF",ink:"#0F1B3D",line:"#E6E8F0",muted:"#6B7185"},
+      "Dark":      {bg:"#0E1116",panel:"#171B22",ink:"#E8EAF0",line:"#262B36",muted:"#8B92A6"},
+      "Linear":    {bg:"#FAFAFA",panel:"#FFFFFF",ink:"#0A0A0A",line:"#EAEAEA",muted:"#737373"},
+      "Notion":    {bg:"#FFFFFF",panel:"#F7F6F3",ink:"#37352F",line:"#E9E7E3",muted:"#787774"},
+      "Dieter":    {bg:"#F2F2EC",panel:"#FCFCF7",ink:"#1B1B1B",line:"#D9D9D2",muted:"#6E6E6A"},
+    };
+    const p=presets[name]; if(!p) return;
+    setT("preset",name);
+    Object.entries(p).forEach(([k,v])=>setT(k,v));
+  }
+
+  return (
+    <TweaksPanel title="Tweaks · Admin">
+      <TweakSection label="Preset" />
+      <TweakSelect label="Theme" value={t.preset} options={["Light","Dark","Linear","Notion","Dieter"]} onChange={applyPreset}/>
+
+      <TweakSection label="Couleurs UI" />
+      <TweakColor label="Background" value={t.bg} onChange={v=>setT("bg",v)}/>
+      <TweakColor label="Panel" value={t.panel} onChange={v=>setT("panel",v)}/>
+      <TweakColor label="Texte (ink)" value={t.ink} onChange={v=>setT("ink",v)}/>
+      <TweakColor label="Lignes" value={t.line} onChange={v=>setT("line",v)}/>
+      <TweakColor label="Muted" value={t.muted} onChange={v=>setT("muted",v)}/>
+
+      <TweakSection label="Couleurs accent" />
+      <TweakColor label="Bleu" value={t.blue} onChange={v=>setT("blue",v)}/>
+      <TweakColor label="Rouge" value={t.red} onChange={v=>setT("red",v)}/>
+      <TweakColor label="Jaune" value={t.yellow} onChange={v=>setT("yellow",v)}/>
+
+      <TweakSection label="Typographie" />
+      <TweakSelect label="Display" value={t.fontDisplay} options={["Archivo Black","Anton","Bebas Neue","Bungee","Rubik Mono One","Space Grotesk","Inter"]} onChange={v=>setT("fontDisplay",v)}/>
+      <TweakSelect label="Body" value={t.fontBody} options={["Figtree","Inter","Space Grotesk","DM Sans","Manrope"]} onChange={v=>setT("fontBody",v)}/>
+      <TweakSlider label="Taille body" value={t.bodySize} min={11} max={20} unit="px" onChange={v=>setT("bodySize",v)}/>
+
+      <TweakSection label="Layout" />
+      <TweakSlider label="Sidebar (largeur)" value={t.sidebarW} min={180} max={320} unit="px" onChange={v=>setT("sidebarW",v)}/>
+      <TweakRadio label="Densité" value={t.density} options={["compact","regular","comfy"]} onChange={v=>setT("density",v)}/>
+    </TweaksPanel>
+  );
+}
+
+const __mount = document.createElement("div");
+document.body.appendChild(__mount);
+ReactDOM.createRoot(__mount).render(<App/>);
+</script>
+</body>
+</html>

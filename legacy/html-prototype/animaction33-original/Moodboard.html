@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Moodboard · 4 directions</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#f0eee9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  iframe{border:0;display:block;width:100%;height:100%;background:#fff}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const AW = 1240;
+const AH = 1900;
+const Frame = ({ src }) => <iframe src={src} title={src} scrolling="yes"/>;
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="homes" title="AnimAction33 — 4 directions en parallèle" subtitle="Scroll chaque artboard indépendamment · Double-clic pour passer en focus ·  Drag pour réordonner">
+        <DCArtboard id="v01" label="01 · Cartoon Néo-Brutalisme (actuel)" width={AW} height={AH}>
+          <Frame src="variants/v01-cartoon.html"/>
+        </DCArtboard>
+        <DCArtboard id="v02" label="02 · Editorial Magazine" width={AW} height={AH}>
+          <Frame src="variants/v02-editorial.html"/>
+        </DCArtboard>
+        <DCArtboard id="v03" label="03 · Dark Premium Glass" width={AW} height={AH}>
+          <Frame src="variants/v03-darkglass.html"/>
+        </DCArtboard>
+        <DCArtboard id="v07" label="07 · Confetti Tactile" width={AW} height={AH}>
+          <Frame src="variants/v07-confetti.html"/>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
