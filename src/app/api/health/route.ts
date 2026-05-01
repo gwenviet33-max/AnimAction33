@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getDb } from '@/lib/firebase-admin'
+import { firebaseInitDiagnostic, getDb } from '@/lib/firebase-admin'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -35,6 +35,8 @@ export async function GET() {
     }
   }
 
+  const diag = firebaseInitDiagnostic()
+
   return NextResponse.json({
     ts: new Date().toISOString(),
     firestore: {
@@ -43,6 +45,7 @@ export async function GET() {
       error: firestoreError,
       contentDocCount,
     },
+    init: diag,
     env,
     backend: db ? 'firestore' : 'filesystem (NOT persistent on Netlify)',
   })
