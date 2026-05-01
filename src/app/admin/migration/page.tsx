@@ -82,8 +82,10 @@ export default function MigrationPage() {
     <div className="max-w-3xl">
       <h1 className="font-display text-3xl uppercase md:text-4xl">Migration localStorage → Firestore</h1>
       <p className="mt-2 text-aa-ink/70">
-        Cette page lit les clés <code>aa_content:*</code> stockées dans le navigateur de cet appareil et les
-        envoie vers Firestore. À exécuter une seule fois, depuis l&apos;appareil qui a le plus de données.
+        La migration tourne <strong>automatiquement</strong> à chaque connexion admin sur un nouvel appareil :
+        si des clés <code>aa_content:*</code> traînent dans le navigateur, elles partent en Firestore au
+        chargement de n&apos;importe quelle page admin et sont effacées localement. Cette page reste
+        disponible pour <em>vérifier</em> ou <em>relancer manuellement</em> la migration en cas d&apos;échec.
       </p>
 
       <div className="mt-6 rounded-md border-[3px] border-aa-ink bg-aa-yellow p-5 shadow-pop">

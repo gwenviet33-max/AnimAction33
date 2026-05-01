@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdminLogout } from '@/components/admin/AdminLogout'
+import { AutoMigrate } from '@/components/admin/AutoMigrate'
 
 export const metadata: Metadata = {
   title: 'Admin · AnimAction33',
@@ -24,6 +25,7 @@ const NAV = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-aa-paper">
+      <AutoMigrate />
       <div className="flex min-h-screen flex-col md:flex-row">
         <aside className="md:w-60 md:shrink-0 bg-aa-ink text-aa-paper">
           <div className="border-b border-aa-paper/15 p-5">
