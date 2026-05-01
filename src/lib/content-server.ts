@@ -1,7 +1,7 @@
 import 'server-only'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { unstable_cache, revalidateTag } from 'next/cache'
+import { unstable_cache, revalidatePath, revalidateTag } from 'next/cache'
 import { getDb } from './firebase-admin'
 import { STORE_DEFAULTS, type StoreSection } from './defaults'
 
@@ -62,7 +62,7 @@ function cachedReaderFor<K extends StoreSection>(section: K) {
     cachedReaders[section] = unstable_cache(
       async () => readSectionRaw(section),
       [`content-${section}`],
-      { tags: [tag(section)], revalidate: 60 }
+      { tags: [tag(section)], revalidate: 10 }
     ) as () => Promise<(typeof STORE_DEFAULTS)[StoreSection]>
   }
   return cachedReaders[section] as () => Promise<(typeof STORE_DEFAULTS)[K]>
@@ -98,11 +98,14 @@ export async function setContent<K extends StoreSection>(
   } else {
     await fsWriteContent(section, value)
   }
-  // Bust both the per-section server cache and any path that aggregates many sections
+  // Bust per-section data cache + every page/layout that may render this content.
+  // This forces public pages (home, /prestations/*, etc.) to regenerate at the
+  // next request, so admin edits become visible site-wide within seconds.
   try {
     revalidateTag(tag(section))
+    revalidatePath('/', 'layout')
   } catch {
-    // revalidateTag throws outside request scope (e.g. during tests) — safe to ignore
+    // revalidatePath/revalidateTag throw outside request scope — safe to ignore
   }
 }
 

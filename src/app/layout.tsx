@@ -12,6 +12,12 @@ import { getAllContent } from '@/lib/content-server'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://animaction33.netlify.app'
 
+// ISR: regenerate pages every 30s as a safety net, even if no admin write
+// fires revalidatePath. Combined with the per-write revalidation in
+// content-server.setContent, admin edits propagate to every visitor within
+// seconds (instant if they hit the page after a write, max 30s otherwise).
+export const revalidate = 30
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
