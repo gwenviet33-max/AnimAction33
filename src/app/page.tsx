@@ -6,7 +6,6 @@ import { GamesCatalog } from '@/components/homepage/GamesCatalog'
 import { StatsBlock } from '@/components/homepage/StatsBlock'
 import { TestimonialsSection } from '@/components/homepage/TestimonialsSection'
 import { FaqSection } from '@/components/homepage/FaqSection'
-import { ContactQuick } from '@/components/homepage/ContactQuick'
 
 export default function HomePage() {
   return (
@@ -19,7 +18,6 @@ export default function HomePage() {
       <StatsBlock />
       <TestimonialsSection />
       <FaqSection />
-      <ContactQuick />
     </>
   )
 }

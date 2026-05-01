@@ -109,3 +109,14 @@ export async function setContent<K extends StoreSection>(
 export function isValidSection(s: string): s is StoreSection {
   return (ALL_SECTIONS as string[]).includes(s)
 }
+
+/**
+ * Returns true if the prestation with this key (e.g. "mariages") is active.
+ * Returns true for unknown keys (fail-open).
+ */
+export async function isPrestationActive(key: string): Promise<boolean> {
+  const list = await getContent('prestations')
+  const found = list.find((p) => p.key === key)
+  if (!found) return true
+  return found.active
+}

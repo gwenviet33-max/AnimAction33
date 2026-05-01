@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
+import { isPrestationActive } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Écoles, ALSH & accueils périscolaires — animation Gironde',
@@ -7,7 +9,8 @@ export const metadata: Metadata = {
     "Animation de centres de loisirs, NAP, accueils périscolaires : projets pédagogiques, BAFA/BAFD, RC Pro. Libourne et Gironde.",
 }
 
-export default function EcolesPage() {
+export default async function EcolesPage() {
+  if (!(await isPrestationActive('ecoles'))) notFound()
   return (
     <PrestationPage
       emoji="🏫"

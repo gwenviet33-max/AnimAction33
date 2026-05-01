@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getContent } from '@/lib/content-server'
+import { notFound } from 'next/navigation'
+import { getContent, isPrestationActive } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Catalogue grands jeux — +30 animations sur mesure',
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 const CATS = ['Tous', 'Immersif', 'Aventure', 'Exploration', 'Show', 'Compétition', 'Stratégie', 'Adresse', 'Terrain', 'Classique', 'Action']
 
 export default async function GrandsJeuxPage() {
+  if (!(await isPrestationActive('grands-jeux'))) notFound()
   const games = await getContent('games')
 
   return (

@@ -5,15 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { fireConfetti } from '@/lib/utils'
-
-const TYPES = [
-  { v: 'anniv', l: '🎂 Anniversaire' },
-  { v: 'mariage', l: '💍 Mariage' },
-  { v: 'evg', l: '🥂 EVG / EVF' },
-  { v: 'team', l: '🏢 Team Building' },
-  { v: 'ecole', l: '🏫 École / Loisirs' },
-  { v: 'autre', l: '✨ Autre' },
-]
+import { useStoreSection } from '@/lib/store'
 
 const Schema = z.object({
   type: z.string().min(1, 'Choisissez un type'),
@@ -30,6 +22,7 @@ const Schema = z.object({
   email: z.string().email('Email invalide'),
   message: z.string().optional(),
   code: z.string().optional(),
+  typeLabel: z.string().optional(),
   rgpd: z.literal(true, { errorMap: () => ({ message: 'Consentement requis' }) }),
 })
 
@@ -38,6 +31,7 @@ type FormData = z.infer<typeof Schema>
 const STEPS = ['Type', 'Détails', 'Coordonnées', 'Confirmation']
 
 export function ContactForm() {
+  const TYPES = useStoreSection('contactTypes')
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
@@ -170,14 +164,17 @@ export function ContactForm() {
             {TYPES.map((t) => (
               <button
                 type="button"
-                key={t.v}
-                onClick={() => setValue('type', t.v, { shouldValidate: true })}
+                key={t.value}
+                onClick={() => {
+                  setValue('type', t.value, { shouldValidate: true })
+                  setValue('typeLabel', t.label)
+                }}
                 className={
                   'rounded-md border-[3px] border-aa-ink p-4 text-center font-bold transition ' +
-                  (type === t.v ? 'bg-aa-red text-white' : 'bg-white text-aa-ink hover:bg-aa-yellow')
+                  (type === t.value ? 'bg-aa-red text-white' : 'bg-white text-aa-ink hover:bg-aa-yellow')
                 }
               >
-                {t.l}
+                {t.label}
               </button>
             ))}
           </div>

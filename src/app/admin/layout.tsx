@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 const NAV = [
   { href: '/admin', label: '🏠 Tableau de bord' },
+  { href: '/admin/contenus', label: '✏️ Contenus du site' },
   { href: '/admin/tarifs', label: '💰 Tarifs & prix' },
   { href: '/admin/bandeau', label: '📣 Bandeau' },
   { href: '/admin/temoignages', label: '💬 Témoignages' },

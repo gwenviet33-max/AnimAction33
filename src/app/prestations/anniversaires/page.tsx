@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { getContent } from '@/lib/content-server'
+import { getContent, isPrestationActive } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Anniversaires enfants — animations Libourne dès 199€',
@@ -18,6 +19,7 @@ const serviceSchema = {
 }
 
 export default async function AnniversairesPage() {
+  if (!(await isPrestationActive('anniversaires'))) notFound()
   const formules = await getContent('formules')
   return (
     <>

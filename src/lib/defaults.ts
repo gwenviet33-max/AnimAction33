@@ -18,6 +18,7 @@ export type Testimonial = {
   affiche: boolean
 }
 export type FaqItem = { q: string; a: string }
+export type ContactType = { value: string; label: string }
 export type Formule = {
   nom: string
   prix: number | null
@@ -173,6 +174,14 @@ export const STORE_DEFAULTS = {
     zone: 'Libourne & Gironde',
     whatsapp: '33677243675',
   },
+  contactTypes: [
+    { value: 'anniv', label: '🎂 Anniversaire' },
+    { value: 'mariage', label: '💍 Mariage' },
+    { value: 'evg', label: '🥂 EVG / EVF' },
+    { value: 'team', label: '🏢 Team Building' },
+    { value: 'ecole', label: '🏫 École / Loisirs' },
+    { value: 'autre', label: '✨ Autre' },
+  ] as ContactType[],
   bandeau: {
     actif: true,
     texte: '🔥 Les dates d’été se remplissent vite — Réservez maintenant !',

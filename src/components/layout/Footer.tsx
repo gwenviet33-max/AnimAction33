@@ -3,10 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Instagram, Youtube } from 'lucide-react'
-import { aaStore } from '@/lib/store'
+import { aaStore, useStoreSection } from '@/lib/store'
 
 export function Footer() {
-  const config = aaStore.DEFAULTS.config
+  const config = useStoreSection('config')
+  const contact = useStoreSection('contact')
+  const prestations = useStoreSection('prestations')
+  const visiblePrestations = prestations.filter((p) => p.active)
 
   return (
     <footer className="bg-aa-ink text-aa-paper">
@@ -77,12 +80,13 @@ export function Footer() {
         <div>
           <h4 className="mb-3 font-display uppercase text-aa-yellow">Prestations</h4>
           <ul className="space-y-2 text-aa-paper/80">
-            <li><Link href="/prestations/anniversaires" className="hover:text-aa-yellow">Anniversaires</Link></li>
-            <li><Link href="/prestations/mariages" className="hover:text-aa-yellow">Mariages</Link></li>
-            <li><Link href="/prestations/evg-evf" className="hover:text-aa-yellow">EVG / EVF</Link></li>
-            <li><Link href="/prestations/team-building" className="hover:text-aa-yellow">Team Building</Link></li>
-            <li><Link href="/prestations/grands-jeux" className="hover:text-aa-yellow">Grands Jeux</Link></li>
-            <li><Link href="/prestations/ecoles-loisirs" className="hover:text-aa-yellow">Écoles & Loisirs</Link></li>
+            {visiblePrestations.map((p) => (
+              <li key={p.key}>
+                <Link href={p.href} className="hover:text-aa-yellow">
+                  {p.title}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -105,7 +109,7 @@ export function Footer() {
           <ul className="space-y-2 text-aa-paper/80">
             <li>📍 Libourne & Gironde</li>
             <li><a href="tel:+33677243675" className="hover:text-aa-yellow">📞 06 77 24 36 75</a></li>
-            <li><a href={`mailto:${aaStore.DEFAULTS.contact.email}`} className="hover:text-aa-yellow">✉️ {aaStore.DEFAULTS.contact.email}</a></li>
+            <li><a href={`mailto:${contact.email}`} className="hover:text-aa-yellow">✉️ {contact.email}</a></li>
             <li>🕒 Lun–Dim · 9h–20h</li>
           </ul>
         </div>

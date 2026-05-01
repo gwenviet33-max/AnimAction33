@@ -7,6 +7,7 @@ export const runtime = 'nodejs'
 
 const Schema = z.object({
   type: z.string().min(1),
+  typeLabel: z.string().optional(),
   date: z.string().optional(),
   participants: z.string().optional(),
   lieu: z.string().optional(),
@@ -20,7 +21,9 @@ const Schema = z.object({
   rgpd: z.literal(true),
 })
 
-const TYPE_LABELS: Record<string, string> = {
+// Fallback labels for the historical hard-coded types. Admin-defined types
+// arrive with their typeLabel filled, so we only need this for legacy values.
+const FALLBACK_LABELS: Record<string, string> = {
   anniv: 'Anniversaire',
   mariage: 'Mariage',
   evg: 'EVG / EVF',
@@ -28,6 +31,9 @@ const TYPE_LABELS: Record<string, string> = {
   ecole: 'École / Loisirs',
   autre: 'Autre',
 }
+
+const labelOf = (d: { type: string; typeLabel?: string }) =>
+  d.typeLabel || FALLBACK_LABELS[d.type] || d.type
 
 const couponLine = (status: 'valid' | 'invalid' | 'none', code?: string) => {
   if (status === 'none') return ''
@@ -40,7 +46,7 @@ const renderEmail = (d: z.infer<typeof Schema>, couponStatus: 'valid' | 'invalid
 <div style="font-family: 'Helvetica Neue', sans-serif; background:#FFFDF6; padding:24px; color:#0F1B3D;">
   <h1 style="font-family:'Archivo Black', Arial Black, sans-serif; text-transform:uppercase; color:#E8252C;">Nouvelle demande</h1>
   <table cellpadding="6" style="border-collapse:collapse; font-size:14px;">
-    <tr><td><b>Type</b></td><td>${TYPE_LABELS[d.type] || d.type}</td></tr>
+    <tr><td><b>Type</b></td><td>${labelOf(d)}</td></tr>
     <tr><td><b>Date</b></td><td>${d.date || '—'}</td></tr>
     <tr><td><b>Participants</b></td><td>${d.participants || '—'}</td></tr>
     <tr><td><b>Lieu</b></td><td>${d.lieu || '—'}</td></tr>
@@ -105,7 +111,7 @@ export async function POST(request: Request) {
     await resend.emails.send({
       from,
       to,
-      subject: `Demande ${TYPE_LABELS[data.type] || data.type} — ${data.prenom}${data.code ? ` · code ${data.code}` : ''}`,
+      subject: `Demande ${labelOf(data)} — ${data.prenom}${data.code ? ` · code ${data.code}` : ''}`,
       html: renderEmail(data, couponStatus),
       replyTo: data.email,
     })

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { PrestationPage } from '@/components/prestation/PrestationPage'
-import { getContent } from '@/lib/content-server'
+import { getContent, isPrestationActive } from '@/lib/content-server'
 
 export const metadata: Metadata = {
   title: 'Team Building Gironde — olympiades, escape, grands jeux',
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function TeamBuildingPage() {
+  if (!(await isPrestationActive('team'))) notFound()
   const formules = await getContent('formules')
   return (
     <PrestationPage
