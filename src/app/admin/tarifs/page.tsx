@@ -17,7 +17,7 @@ export default function TarifsAdmin() {
   const [open, setOpen] = useState<string>('anniversaires')
 
   useEffect(() => {
-    setData(aaStore.get('formules'))
+    aaStore.get('formules').then(setData)
   }, [])
 
   const update = (sec: keyof typeof STORE_DEFAULTS.formules, idx: number, patch: Partial<Formule>) => {

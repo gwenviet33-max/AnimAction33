@@ -8,7 +8,7 @@ export default function BandeauAdmin() {
   const [data, setData] = useState(STORE_DEFAULTS.bandeau)
 
   useEffect(() => {
-    setData(aaStore.get('bandeau'))
+    aaStore.get('bandeau').then(setData)
   }, [])
 
   const save = () => {

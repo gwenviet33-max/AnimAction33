@@ -9,8 +9,8 @@ export default function ParametresAdmin() {
   const [config, setConfig] = useState(STORE_DEFAULTS.config)
 
   useEffect(() => {
-    setContact(aaStore.get('contact'))
-    setConfig(aaStore.get('config'))
+    aaStore.get('contact').then(setContact)
+    aaStore.get('config').then(setConfig)
   }, [])
 
   const save = () => {
@@ -19,19 +19,31 @@ export default function ParametresAdmin() {
     showToast('💾 Paramètres sauvegardés')
   }
 
-  const exportJson = () => {
+  const exportJson = async () => {
+    const [stats, hero, marquee, prestations, games, testimonials, faq, bandeau, formules] =
+      await Promise.all([
+        aaStore.get('stats'),
+        aaStore.get('hero'),
+        aaStore.get('marquee'),
+        aaStore.get('prestations'),
+        aaStore.get('games'),
+        aaStore.get('testimonials'),
+        aaStore.get('faq'),
+        aaStore.get('bandeau'),
+        aaStore.get('formules'),
+      ])
     const data = {
-      stats: aaStore.get('stats'),
-      hero: aaStore.get('hero'),
-      marquee: aaStore.get('marquee'),
-      prestations: aaStore.get('prestations'),
-      games: aaStore.get('games'),
-      testimonials: aaStore.get('testimonials'),
-      faq: aaStore.get('faq'),
+      stats,
+      hero,
+      marquee,
+      prestations,
+      games,
+      testimonials,
+      faq,
       contact,
-      bandeau: aaStore.get('bandeau'),
+      bandeau,
       config,
-      formules: aaStore.get('formules'),
+      formules,
     }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)

@@ -23,7 +23,7 @@ export default function TemoignagesAdmin() {
   })
 
   useEffect(() => {
-    setList(aaStore.get('testimonials'))
+    aaStore.get('testimonials').then(setList)
   }, [])
 
   const persist = (next: Testimonial[]) => {

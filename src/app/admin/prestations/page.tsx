@@ -8,7 +8,7 @@ export default function PrestationsAdmin() {
   const [list, setList] = useState(STORE_DEFAULTS.prestations)
 
   useEffect(() => {
-    setList(aaStore.get('prestations'))
+    aaStore.get('prestations').then(setList)
   }, [])
 
   const update = (i: number, patch: Partial<(typeof STORE_DEFAULTS.prestations)[number]>) => {

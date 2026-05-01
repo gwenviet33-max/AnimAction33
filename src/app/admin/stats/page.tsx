@@ -8,7 +8,7 @@ export default function StatsAdmin() {
   const [data, setData] = useState(STORE_DEFAULTS.stats)
 
   useEffect(() => {
-    setData(aaStore.get('stats'))
+    aaStore.get('stats').then(setData)
   }, [])
 
   const update = (group: 'hero' | 'block', i: number, patch: Partial<(typeof STORE_DEFAULTS.stats.hero)[number]>) => {
