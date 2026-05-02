@@ -17,6 +17,7 @@ const NAV = [
   { href: '/admin/temoignages', label: '💬 Témoignages' },
   { href: '/admin/galerie', label: '🖼️ Galerie' },
   { href: '/admin/coupons', label: '🎁 Bons de réduction' },
+  { href: '/admin/classement', label: '🏆 Classement mini-jeu' },
   { href: '/admin/prestations', label: '🎯 Prestations' },
   { href: '/admin/stats', label: '📊 Stats & chiffres' },
   { href: '/admin/parametres', label: '⚙️ Paramètres' },
