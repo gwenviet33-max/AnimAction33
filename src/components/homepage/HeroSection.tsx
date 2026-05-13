@@ -62,16 +62,6 @@ export function HeroSection() {
             priority
             className="mx-auto h-[520px] w-auto animate-float drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
           />
-          <div
-            className="absolute -right-2 top-[10%] -rotate-12 transform rounded-full border-[3px] border-aa-ink bg-aa-red px-3 py-1.5 font-display text-sm uppercase text-white shadow-pop-sm"
-          >
-            On arrive !
-          </div>
-          <div
-            className="absolute bottom-[14%] -left-2 rotate-[8deg] transform rounded-full border-[3px] border-aa-ink bg-aa-yellow px-3 py-1.5 font-display text-sm uppercase text-aa-ink shadow-pop-sm"
-          >
-            ★ Fun garanti
-          </div>
           <div className="absolute right-[18%] top-[2%] animate-float text-3xl">⭐</div>
           <div className="absolute left-[6%] top-[40%] animate-float text-3xl" style={{ animationDelay: '1s' }}>
             🎉

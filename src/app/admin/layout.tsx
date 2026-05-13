@@ -20,10 +20,11 @@ const NAV = [
   { href: '/admin/coupons', label: '🎁 Bons de réduction' },
   { href: '/admin/classement', label: '🏆 Classement mini-jeu' },
   { href: '/admin/blog', label: '📝 Blog' },
-  { href: '/admin/prestations', label: '🎯 Prestations' },
+  { href: '/admin/prestations', label: '🎯 Prestations (activation)' },
+  { href: '/admin/prestations-content', label: '📄 Contenu prestations' },
+  { href: '/admin/games', label: '🎲 Catalogue jeux' },
   { href: '/admin/stats', label: '📊 Stats & chiffres' },
   { href: '/admin/parametres', label: '⚙️ Paramètres' },
-  { href: '/admin/migration', label: '🚚 Migration localStorage' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

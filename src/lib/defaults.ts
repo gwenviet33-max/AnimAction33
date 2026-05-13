@@ -27,6 +27,16 @@ export type BlogPost = {
   published: boolean
   date: string
 }
+export type Activity = { emoji: string; nom: string }
+export type TimelineStep = { temps: string; titre: string; desc: string }
+export type PrestationDetail = {
+  baseline: string
+  intro: string
+  inclus: string[]
+  activites: Activity[]
+  timeline: TimelineStep[]
+  options: string[]
+}
 export type Formule = {
   nom: string
   prix: number | null
@@ -361,6 +371,167 @@ export const STORE_DEFAULTS = {
       },
     ] as Formule[],
   },
+  prestationsDetails: {
+    anniversaires: {
+      baseline:
+        "Koh-Lanta version cours d'école, chasse au trésor sur mesure, murder party junior — on transforme votre maison ou votre jardin en terrain d'aventure.",
+      intro:
+        "Un animateur professionnel, des scénarios cousus main pour l'âge des enfants, du matériel pro fourni — vous n'avez qu'à profiter de la journée. Photos, diplômes souvenir, surprise finale : c'est nous qui gérons.",
+      inclus: [
+        '1 animateur diplômé BAFA/BAFD',
+        "Scénario sur mesure selon l'âge",
+        'Tout le matériel (déguisements, accessoires, sono)',
+        'Diplôme + souvenir pour chaque enfant',
+        'Photos de la journée',
+        'Devis détaillé sous 48h',
+      ],
+      activites: [
+        { emoji: '🏝️', nom: 'Koh-Lanta' },
+        { emoji: '🗺️', nom: 'Chasse au trésor' },
+        { emoji: '🎭', nom: 'Murder Party junior' },
+        { emoji: '🎯', nom: 'Olympiades' },
+        { emoji: '🕵️', nom: 'Enquête mystère' },
+        { emoji: '🎨', nom: 'Atelier créatif' },
+        { emoji: '🎤', nom: 'Karaoké kids' },
+        { emoji: '🦸', nom: 'Aventure héros' },
+      ],
+      timeline: [
+        { temps: 'J-7', titre: 'Préparation', desc: 'On finalise le thème, les surprises et le matériel.' },
+        { temps: 'H', titre: 'Arrivée des enfants', desc: 'Accueil costumé, présentation des règles, mise en équipes.' },
+        { temps: 'H+30', titre: 'Le grand jeu', desc: 'Ateliers, défis, énigmes, fous rires garantis.' },
+        { temps: 'H+1h45', titre: 'Goûter & cadeaux', desc: 'Pause goûter, remise des diplômes, photo de groupe.' },
+        { temps: 'H+2h', titre: 'Retour des parents', desc: 'Enfants épuisés, parents ravis. Mission accomplie.' },
+      ],
+      options: ['Décoration thématique', 'Goûter inclus', 'Vidéo souvenir', 'Animateur n°2', 'Sono + micro', 'Costumes adultes'],
+    },
+    mariages: {
+      baseline:
+        "Vin d'honneur rythmé, soirée déchaînée ou journée complète : on s'adapte à vos envies, des plus chics aux plus folles.",
+      intro:
+        "Animation enfants pendant que les parents profitent, blind test pour briser la glace, karaoké géant pour libérer les voix : on dose le fun selon l'ambiance que VOUS voulez.",
+      inclus: [
+        'Animateur expérimenté en mariages',
+        'Sono + micro fournis',
+        'Programme personnalisé selon votre déroulé',
+        'Coordination avec votre traiteur / DJ',
+        'Repérage du lieu en amont',
+        'Plan B en cas de pluie',
+      ],
+      activites: [
+        { emoji: '🎤', nom: 'Karaoké' },
+        { emoji: '🎵', nom: 'Blind Test' },
+        { emoji: '💃', nom: 'Animation danse' },
+        { emoji: '🎲', nom: 'Quiz mariés' },
+        { emoji: '🎪', nom: 'Animation enfants' },
+        { emoji: '🏆', nom: 'Olympiades adultes' },
+        { emoji: '🎁', nom: 'Surprise mariés' },
+        { emoji: '📸', nom: 'Photobooth' },
+      ],
+      timeline: [
+        { temps: 'J-30', titre: 'Visio de prépa', desc: 'On cale le déroulé avec les mariés.' },
+        { temps: "Vin d'honneur", titre: 'Mise en route', desc: 'Animation enfants, jeu adultes léger, ambiance.' },
+        { temps: 'Repas', titre: 'Pause maîtrisée', desc: 'Quiz mariés entre les plats, anecdotes drôles.' },
+        { temps: 'Soirée', titre: 'Le feu', desc: 'Blind test, karaoké, animations lancées au bon moment.' },
+        { temps: 'Fin', titre: 'Cérémonie minuit', desc: 'Surprise des mariés ou fin en beauté.' },
+      ],
+      options: ['Animation enfants 2h', 'Photobooth', 'DJ partenaire', 'Cérémonie minuit', 'Surprise vidéo', 'Décoration'],
+    },
+    evg: {
+      baseline:
+        "Défis physiques, jeux décalés, scénarios immersifs : on prend en main 2 à 8 heures de votre journée pour souder le groupe et marquer le futur(e) marié(e) à vie.",
+      intro:
+        "Vous arrivez. On a tout préparé. Le futur(e) marié(e) ne sait rien, le groupe est lancé, l'ambiance monte. On reste pro — vous restez fun.",
+      inclus: [
+        'Animateur expérimenté EVG/EVF',
+        'Scénario adapté au groupe',
+        'Tout le matériel et accessoires',
+        'Costumes / déguisements selon thème',
+        'Coordination avec votre planning',
+        'Photos du groupe',
+      ],
+      activites: [
+        { emoji: '🏝️', nom: 'Koh-Lanta adulte' },
+        { emoji: '🎭', nom: 'Murder party' },
+        { emoji: '🚶', nom: 'City game' },
+        { emoji: '🏝️', nom: 'Pékin Express urbain' },
+        { emoji: '💪', nom: 'Parcours du combattant' },
+        { emoji: '🎯', nom: 'Défis fous' },
+        { emoji: '❓', nom: 'Quiz futur(e) marié(e)' },
+        { emoji: '🕵️', nom: 'Missions secrètes' },
+      ],
+      timeline: [
+        { temps: 'Pré', titre: 'Brief organisateur', desc: "On cale le scénario en visio avec l'organisateur(trice)." },
+        { temps: 'H', titre: 'Arrivée surprise', desc: 'Briefing surprise du futur(e) marié(e), missions distribuées.' },
+        { temps: 'H+1h', titre: 'Défis & énigmes', desc: "Enchaînement d'épreuves rapides, montée en intensité." },
+        { temps: 'H+2h', titre: 'Scénario immersif', desc: "Pic de l'expérience : grand jeu signature." },
+        { temps: 'Fin', titre: 'Diplôme + photo', desc: 'Remise du "diplôme de futur(e) marié(e)", photo souvenir.' },
+      ],
+      options: ['Costumes / déguisements', 'Vidéaste', 'Repas inclus', 'Hébergement (sur devis)', 'Transport groupe', 'Surprise personnalisée'],
+    },
+    team: {
+      baseline:
+        "Olympiades, escape game, grands jeux d'entreprise : on cale le tempo, on libère les rires — le management se passe le reste de la semaine.",
+      intro:
+        "Atelier court ou journée séminaire complète : on conçoit un programme aligné sur vos objectifs RH (cohésion, intégration, fun pur) et adapté à la taille du groupe.",
+      inclus: [
+        'Animateur professionnel',
+        'Programme ajusté à vos objectifs',
+        'Tout le matériel + sono',
+        'Rapport animation post-événement',
+        'Facture entreprise',
+        'Adaptation indoor / outdoor',
+      ],
+      activites: [
+        { emoji: '🏆', nom: 'Olympiades' },
+        { emoji: '🎲', nom: 'Escape Game' },
+        { emoji: '🚩', nom: 'Capture du drapeau' },
+        { emoji: '🗺️', nom: 'Chasse au trésor' },
+        { emoji: '🎤', nom: 'Blind test équipe' },
+        { emoji: '💪', nom: 'Défis cohésion' },
+        { emoji: '🕵️', nom: 'Murder party' },
+        { emoji: '🎯', nom: 'Grands jeux' },
+      ],
+      timeline: [
+        { temps: 'J-15', titre: 'Cadrage', desc: 'Visio avec le service RH pour fixer objectifs et contraintes.' },
+        { temps: 'J', titre: 'Accueil', desc: 'Énergisation rapide, formation des équipes mélangées.' },
+        { temps: 'Matinée', titre: 'Défis cohésion', desc: "Ateliers tournants, première montée d'adrénaline." },
+        { temps: 'Midi', titre: 'Pause optimisée', desc: 'Format pause café ou déjeuner libre selon votre cadre.' },
+        { temps: 'Après-midi', titre: 'Grand jeu final', desc: 'Olympiades / escape — un seul gagnant, des souvenirs partagés.' },
+      ],
+      options: ['Vidéo souvenir', 'Photographe', 'Trophée gravé', 'T-shirts personnalisés', 'Restauration', 'Salle privatisée'],
+    },
+    ecoles: {
+      baseline:
+        "Centres de loisirs, NAP, accueils périscolaires : interventions ponctuelles ou projets longs, pour soulager vos équipes ou réenchanter une thématique.",
+      intro:
+        "BAFD complet, expérience en direction d'ALSH, projets pédagogiques cousus main pour la tranche 3-12 ans. Vos équipes restent maîtres de la pédagogie — on apporte l'expertise grands jeux.",
+      inclus: [
+        'Animateur diplômé BAFA/BAFD',
+        'Projet pédagogique sur mesure',
+        'Tout le matériel pédagogique',
+        "Rapport d'activité post-intervention",
+        'Coordination avec votre direction',
+        'Facture mairie / association',
+      ],
+      activites: [
+        { emoji: '🎨', nom: 'Ateliers créatifs' },
+        { emoji: '🏃', nom: 'Grands jeux' },
+        { emoji: '🗺️', nom: 'Chasse au trésor' },
+        { emoji: '🎭', nom: 'Atelier théâtre' },
+        { emoji: '🎵', nom: 'Atelier musique' },
+        { emoji: '🌳', nom: 'Sorties nature' },
+        { emoji: '🥋', nom: 'Initiation Viet Vo Dao' },
+        { emoji: '📚', nom: 'Veillées contées' },
+      ],
+      timeline: [
+        { temps: 'Pré', titre: 'Réunion de cadrage', desc: 'Avec la direction : objectifs, public, contraintes.' },
+        { temps: 'J-7', titre: 'Validation du projet', desc: 'Programme final + matériel listé.' },
+        { temps: 'Jour J', titre: 'Animation', desc: 'Intervention de 1h à journée complète.' },
+        { temps: 'Post', titre: 'Bilan', desc: 'Rapport pédagogique + photos pour la commune.' },
+      ],
+      options: ['Mallette pédagogique', 'Costume thème', 'Vidéo bilan', 'Sortie extérieure'],
+    },
+  } as Record<string, PrestationDetail>,
 }
 
 export type StoreSection = keyof typeof STORE_DEFAULTS

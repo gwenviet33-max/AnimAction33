@@ -20,7 +20,11 @@ const serviceSchema = {
 
 export default async function AnniversairesPage() {
   if (!(await isPrestationActive('anniversaires'))) notFound()
-  const formules = await getContent('formules')
+  const [formules, details] = await Promise.all([
+    getContent('formules'),
+    getContent('prestationsDetails'),
+  ])
+  const d = details.anniversaires
   return (
     <>
       <script
@@ -32,35 +36,13 @@ export default async function AnniversairesPage() {
         badge="🎂 Anniversaires"
         title="L'anniversaire qu'ils ne"
         titleAccent="raconteront pas en classe (ils le mimeront)"
-        baseline="Koh-Lanta version cours d'école, chasse au trésor sur mesure, murder party junior — on transforme votre maison ou votre jardin en terrain d'aventure."
-        intro="Un animateur professionnel, des scénarios cousus main pour l'âge des enfants, du matériel pro fourni — vous n'avez qu'à profiter de la journée. Photos, diplômes souvenir, surprise finale : c'est nous qui gérons."
-        inclus={[
-          '1 animateur diplômé BAFA/BAFD',
-          'Scénario sur mesure selon l\'âge',
-          'Tout le matériel (déguisements, accessoires, sono)',
-          'Diplôme + souvenir pour chaque enfant',
-          'Photos de la journée',
-          'Devis détaillé sous 48h',
-        ]}
-        activites={[
-          { emoji: '🏝️', nom: 'Koh-Lanta' },
-          { emoji: '🗺️', nom: 'Chasse au trésor' },
-          { emoji: '🎭', nom: 'Murder Party junior' },
-          { emoji: '🎯', nom: 'Olympiades' },
-          { emoji: '🕵️', nom: 'Enquête mystère' },
-          { emoji: '🎨', nom: 'Atelier créatif' },
-          { emoji: '🎤', nom: 'Karaoké kids' },
-          { emoji: '🦸', nom: 'Aventure héros' },
-        ]}
-        timeline={[
-          { temps: 'J-7', titre: 'Préparation', desc: 'On finalise le thème, les surprises et le matériel.' },
-          { temps: 'H', titre: 'Arrivée des enfants', desc: 'Accueil costumé, présentation des règles, mise en équipes.' },
-          { temps: 'H+30', titre: 'Le grand jeu', desc: 'Ateliers, défis, énigmes, fous rires garantis.' },
-          { temps: 'H+1h45', titre: 'Goûter & cadeaux', desc: 'Pause goûter, remise des diplômes, photo de groupe.' },
-          { temps: 'H+2h', titre: 'Retour des parents', desc: 'Enfants épuisés, parents ravis. Mission accomplie.' },
-        ]}
+        baseline={d.baseline}
+        intro={d.intro}
+        inclus={d.inclus}
+        activites={d.activites}
+        timeline={d.timeline}
         formules={formules.anniversaires}
-        options={['Décoration thématique', 'Goûter inclus', 'Vidéo souvenir', 'Animateur n°2', 'Sono + micro', 'Costumes adultes']}
+        options={d.options}
         bgHero="bg-aa-yellow"
       />
     </>
