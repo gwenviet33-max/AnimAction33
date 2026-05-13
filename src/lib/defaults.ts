@@ -19,6 +19,14 @@ export type Testimonial = {
 }
 export type FaqItem = { q: string; a: string }
 export type ContactType = { value: string; label: string }
+export type BlogPost = {
+  slug: string
+  title: string
+  intro: string
+  body: string
+  published: boolean
+  date: string
+}
 export type Formule = {
   nom: string
   prix: number | null
@@ -173,6 +181,7 @@ export const STORE_DEFAULTS = {
     email: 'contact@animaction33.fr',
     zone: 'Libourne & Gironde',
     whatsapp: '33677243675',
+    schedule: '24h/24, 7j/7 selon vos besoins',
   },
   contactTypes: [
     { value: 'anniv', label: '🎂 Anniversaire' },
@@ -198,6 +207,53 @@ export const STORE_DEFAULTS = {
     facebook: 'https://facebook.com/animaction33',
     youtube: 'https://youtube.com/@animaction33',
     tiktok: 'https://tiktok.com/@animaction33',
+  },
+  blog: {
+    enabled: false,
+    posts: [
+      {
+        slug: 'organiser-anniversaire-koh-lanta',
+        title: 'Comment organiser un anniversaire Koh-Lanta',
+        intro:
+          "Le pas-à-pas pour transformer un jardin (ou un parc public) en arène d'aventure.",
+        body: [
+          "Choisir un thème accrocheur (jungle, île déserte, pirates) et adapter au nombre d'enfants.",
+          'Préparer 4 à 6 ateliers tournants : adresse, équilibre, énigme, mémoire.',
+          'Constituer 2 à 4 équipes équilibrées pour favoriser la coopération.',
+          'Prévoir un final fort : poteaux, totem, photo de groupe.',
+        ].join('\n\n'),
+        published: false,
+        date: '2026-01-01T00:00:00Z',
+      },
+      {
+        slug: 'evg-evf-libourne-bordeaux',
+        title: 'EVG / EVF à Libourne et Bordeaux : 5 idées',
+        intro:
+          "Au-delà du karting et de la dégustation, des animations qui marquent vraiment.",
+        body: [
+          'Koh-Lanta adulte au bord du lac.',
+          'City game urbain à Saint-Émilion ou Bordeaux centre.',
+          'Murder party privatisée dans un château.',
+          'Pékin Express version vignoble.',
+          'Soirée enquête + dîner mystère.',
+        ].join('\n\n'),
+        published: false,
+        date: '2026-01-01T00:00:00Z',
+      },
+      {
+        slug: 'team-building-petite-equipe',
+        title: 'Team building pour petite équipe (5-15 pers)',
+        intro: "Quels formats fonctionnent vraiment quand on est peu nombreux.",
+        body: [
+          'Escape game scénarisé : court, intense, valorise la communication.',
+          "Olympiades 'maison' avec 4 ateliers tournants.",
+          'Atelier coopératif (construction, cuisine, énigmes).',
+          "Le format 'mini-Murder Party' fonctionne très bien à partir de 6.",
+        ].join('\n\n'),
+        published: false,
+        date: '2026-01-01T00:00:00Z',
+      },
+    ] as BlogPost[],
   },
   formules: {
     anniversaires: [

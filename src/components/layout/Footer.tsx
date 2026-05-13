@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Instagram, Youtube } from 'lucide-react'
-import { aaStore, useStoreSection } from '@/lib/store'
+import { useStoreSection } from '@/lib/store'
 
 export function Footer() {
   const config = useStoreSection('config')
   const contact = useStoreSection('contact')
   const prestations = useStoreSection('prestations')
+  const blog = useStoreSection('blog')
   const visiblePrestations = prestations.filter((p) => p.active)
 
   return (
@@ -97,7 +98,9 @@ export function Footer() {
             <li><Link href="/galerie" className="hover:text-aa-yellow">Galerie</Link></li>
             <li><Link href="/temoignages" className="hover:text-aa-yellow">Témoignages</Link></li>
             <li><Link href="/faq" className="hover:text-aa-yellow">FAQ</Link></li>
-            <li><Link href="/blog" className="hover:text-aa-yellow">Blog</Link></li>
+            {blog.enabled && (
+              <li><Link href="/blog" className="hover:text-aa-yellow">Blog</Link></li>
+            )}
             <li><Link href="/mentions-legales" className="hover:text-aa-yellow">Mentions légales</Link></li>
             <li><Link href="/cgv" className="hover:text-aa-yellow">CGV</Link></li>
             <li><Link href="/politique-confidentialite" className="hover:text-aa-yellow">Confidentialité</Link></li>
@@ -107,10 +110,10 @@ export function Footer() {
         <div>
           <h4 className="mb-3 font-display uppercase text-aa-yellow">Contact</h4>
           <ul className="space-y-2 text-aa-paper/80">
-            <li>📍 Libourne & Gironde</li>
-            <li><a href="tel:+33677243675" className="hover:text-aa-yellow">📞 06 77 24 36 75</a></li>
+            <li>📍 {contact.zone}</li>
+            <li><a href={`tel:+${contact.whatsapp}`} className="hover:text-aa-yellow">📞 {contact.phone}</a></li>
             <li><a href={`mailto:${contact.email}`} className="hover:text-aa-yellow">✉️ {contact.email}</a></li>
-            <li>🕒 Lun–Dim · 9h–20h</li>
+            <li>🕒 {contact.schedule}</li>
           </ul>
         </div>
       </div>

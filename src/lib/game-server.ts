@@ -25,31 +25,43 @@ export type PublicLeaderboardEntry = {
   date: string
 }
 
-const BAD_WORDS = [
-  // FR insults / vulgar
-  'putain', 'merde', 'connard', 'connasse', 'salope', 'pute', 'encule',
-  'encules', 'enculer', 'niquer', 'nique', 'bite', 'couille', 'enfoire',
-  'fdp', 'ntm', 'pede', 'gouine', 'mongol', 'batard', 'tarlouze', 'tg',
-  'pétasse', 'petasse',
+// Substring matching: triggers if any of these appears anywhere in the
+// normalized pseudo. Reserved for unambiguous insults that have no chance of
+// being a legitimate first-name substring.
+const BAD_WORDS_SUBSTRING = [
+  // FR
+  'putain', 'merde', 'connard', 'connasse', 'salope', 'enculer', 'enculee',
+  'enculé', 'enculée', 'niquer', 'enfoire', 'enfoiré', 'tarlouze', 'gouine',
+  'batard', 'bâtard', 'pétasse', 'petasse', 'pédé', 'pede',
   // EN
-  'fuck', 'shit', 'bitch', 'asshole', 'cunt', 'whore', 'slut',
-  'nigger', 'faggot',
-  // Impersonation / brand
-  'admin', 'modo', 'moderator', 'animaction', 'gwen',
+  'fuck', 'shit', 'bitch', 'asshole', 'cunt', 'whore', 'slut', 'nigger',
+  'faggot',
+]
+
+// Exact match (after normalization) — short or ambiguous words that would
+// false-positive as substrings. The pseudo must equal one of these exactly.
+const BAD_WORDS_EXACT = [
+  'admin', 'admins', 'modo', 'modos', 'moderator', 'moderateur',
+  'animaction', 'animaction33', 'animactin', 'root', 'system',
+  'fdp', 'ntm', 'tg', 'pd', 'pute', 'putes',
+  'nique', 'bite', 'couille', 'couilles',
 ]
 
 function normalize(s: string) {
   return s
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '') // strip diacritics
+    .replace(/[̀-ͯ]/g, '') // strip combining diacritics
     .replace(/[^a-z0-9]/g, '')
 }
 
 export function containsBadWord(text: string): boolean {
   const n = normalize(text)
   if (!n) return false
-  return BAD_WORDS.some((w) => n.includes(normalize(w)))
+  // Exact match
+  if (BAD_WORDS_EXACT.some((w) => n === normalize(w))) return true
+  // Substring match — only for unambiguous insults
+  return BAD_WORDS_SUBSTRING.some((w) => n.includes(normalize(w)))
 }
 
 function todayKey() {

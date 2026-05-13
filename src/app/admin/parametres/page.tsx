@@ -75,6 +75,11 @@ export default function ParametresAdmin() {
         <Field label="WhatsApp (international)" value={contact.whatsapp} on={(v) => setContact({ ...contact, whatsapp: v })} />
         <Field label="SIRET" value={config.siret} on={(v) => setConfig({ ...config, siret: v })} />
         <Field label="Zone" value={contact.zone} on={(v) => setContact({ ...contact, zone: v })} />
+        <Field
+          label="Horaires (affiché dans le footer)"
+          value={contact.schedule}
+          on={(v) => setContact({ ...contact, schedule: v })}
+        />
         <Field label="Délai devis" value={config.delaiDevis} on={(v) => setConfig({ ...config, delaiDevis: v })} />
       </Section>
 

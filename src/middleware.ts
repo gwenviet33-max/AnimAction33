@@ -7,12 +7,22 @@ export function middleware(request: NextRequest) {
   if (!pathname.startsWith('/admin')) {
     return NextResponse.next()
   }
+
+  const session = request.cookies.get('aa_admin_session')
+  const authed = session?.value === 'authenticated'
+
+  // /admin/login : already authenticated → redirect to dashboard; else pass through
   if (pathname === '/admin/login') {
+    if (authed) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin'
+      return NextResponse.redirect(url)
+    }
     return NextResponse.next()
   }
 
-  const session = request.cookies.get('aa_admin_session')
-  if (!session || session.value !== 'authenticated') {
+  // Any other /admin/* route requires a valid session
+  if (!authed) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)

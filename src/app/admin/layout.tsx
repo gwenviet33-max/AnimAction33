@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { cookies } from 'next/headers'
 import { AdminLogout } from '@/components/admin/AdminLogout'
 import { AutoMigrate } from '@/components/admin/AutoMigrate'
 
@@ -18,6 +19,7 @@ const NAV = [
   { href: '/admin/galerie', label: '🖼️ Galerie' },
   { href: '/admin/coupons', label: '🎁 Bons de réduction' },
   { href: '/admin/classement', label: '🏆 Classement mini-jeu' },
+  { href: '/admin/blog', label: '📝 Blog' },
   { href: '/admin/prestations', label: '🎯 Prestations' },
   { href: '/admin/stats', label: '📊 Stats & chiffres' },
   { href: '/admin/parametres', label: '⚙️ Paramètres' },
@@ -25,6 +27,15 @@ const NAV = [
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  // Only show the sidebar chrome when authenticated. Unauthenticated visitors
+  // get rendered children alone (= the login page). This prevents the sidebar
+  // links from appearing on /admin/login.
+  const authed = cookies().get('aa_admin_session')?.value === 'authenticated'
+
+  if (!authed) {
+    return <div className="min-h-screen bg-aa-ink">{children}</div>
+  }
+
   return (
     <div className="min-h-screen bg-aa-paper">
       <AutoMigrate />
